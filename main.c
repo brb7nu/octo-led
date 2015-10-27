@@ -1,11 +1,16 @@
-// Will Cray
 // Ben Browning
+// Will Cray
 
 #include <msp430.h>
 #include "accelerometer.h"
+#include "LED.h"
 
 int main(void) {
-	WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
+    WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
+
+	initializeLEDPorts();
+	initializeLEDPins();			// intialize the LEDs
+	initializeLEDS();
 	
 	// STARTUP
 	// initialize LED ring
