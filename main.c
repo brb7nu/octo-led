@@ -3,25 +3,29 @@
 
 #include <msp430.h>
 
+typedef enum {startup, calibration, level} SystemState;
+
 int main(void) {
-    WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
+	WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
 	
-    // STARTUP
-    // initialize LED ring
-    // initialize accelerometer
-    // initialize PWM
+	// STARTUP
+	SystemState sysState = startup;
 
-    // CALIBRATION
-    while () // while device is uncalibrated
-    {
+	// initialize LED ring
+	// initialize accelerometer
+	// initialize PWM
 
-    }
-
-    // NORMAL OPERATION -- LEVEL
-    while (1)
-    {
-
-    }
+	while (1)
+	{
+		// state machine for entire system
+		switch (sysState)
+		{
+			case calibration:
+				break;
+			case level:
+				break;
+		}
+	}
 
 	return 0;
 }
