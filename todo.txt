@@ -1,1 +1,10 @@
 Figure out git
+
+calibration routine:
+light certain LEDs to indicate orientation direction to calibrate
+
+ADC:
+figure out how to get X Y Z values from accelerometer
+
+LED:
+How to PWM on multiple LED segments separately
