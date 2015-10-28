@@ -8,6 +8,20 @@
 #include "LED.h"
 
 void initializeLEDS(){
+	int i = 0;
+	/*
+	for(i = 0; i<2; i++){
+		lightLED(N_LED);
+		lightLED(NE_LED);
+		lightLED(E_LED);
+		lightLED(SE_LED);
+		lightLED(S_LED);
+		lightLED(SW_LED);
+		lightLED(W_LED);
+		lightLED(NW_LED);
+	}
+	*/
+
 	lightLED(N_LED);
 
 	lightLED(NE_LED | N_LED);
@@ -33,25 +47,15 @@ void lightLED(unsigned char LED){
 	_delay_cycles(100000);
 }
 
-void initializeLEDPins(){
+void initializeLEDPorts(){
 	P1OUT &= ~( SCK | SI | BLANK);
 	P2OUT |= ( LATCH );
 
 	P1DIR |= ( SCK | SI | BLANK);
 	P2DIR |= ( LATCH );
-	/*
-	P1OUT |= N_LED;
-	P1OUT |= NE_LED;
-	P1OUT |= E_LED;
-	P1OUT |= SE_LED;
-	P1OUT |= S_LED;
-	P1OUT |= SW_LED;
-	P1OUT |= W_LED;
-	P1OUT |= NW_LED;
-	*/
 }
 
-void initializeLEDPorts(){
+void initializeLEDPins(){
 	P1DIR |= N_LED;
 	P1DIR |= NE_LED;
 	P1DIR |= E_LED;
