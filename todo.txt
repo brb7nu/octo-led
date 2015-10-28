@@ -8,3 +8,6 @@ figure out how to get X Y Z values from accelerometer
 
 LED:
 How to PWM on multiple LED segments separately
+
+Future:
+combine functionality into accelerometer_LED_board.h
