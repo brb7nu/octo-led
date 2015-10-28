@@ -9,7 +9,7 @@
 
 void initializeLEDS(){
 	int i = 0;
-	/*
+	
 	for(i = 0; i<2; i++){
 		lightLED(N_LED);
 		lightLED(NE_LED);
@@ -20,7 +20,6 @@ void initializeLEDS(){
 		lightLED(W_LED);
 		lightLED(NW_LED);
 	}
-	*/
 
 	lightLED(N_LED);
 
@@ -44,7 +43,7 @@ void lightLED(unsigned char LED){
 	send(LED);
 	enableLatch();
 	disableLatch();
-	_delay_cycles(100000);
+	_delay_cycles(30000);
 }
 
 void initializeLEDPorts(){
