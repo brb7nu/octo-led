@@ -16,12 +16,12 @@ int main(void) {
 	// initialize LED ring
 	// initialize accelerometer
 	AccelerometerDefinition accelerometer;
-	initializeAccelerometer(accelerometer);
+	initializeAccelerometer(&accelerometer);
 
 	// initialize PWM
 
 	// CALIBRATION
-	calibrateAccelerometer(accelerometer);
+	calibrateAccelerometer(&accelerometer);
 
 	// NORMAL OPERATION -- LEVEL
 	while (1)
