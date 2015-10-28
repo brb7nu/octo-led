@@ -23,6 +23,15 @@
 #define W_LED BIT1
 #define NW_LED BIT0
 
+typedef struct
+{
+	int dutyCycle; // TODO maybe change to on ticks?
+} LEDLightDefinition;
+
+typedef struct
+{
+	LEDLightDefinition leds[8];
+} LEDRingDefinition;
 
 void initializeLEDS();
 void lightLED(unsigned char LED);
