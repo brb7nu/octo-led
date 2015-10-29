@@ -43,7 +43,7 @@ void lightLED(unsigned char LED){
 	send(LED);
 	enableLatch();
 	disableLatch();
-	_delay_cycles(30000);
+	_delay_cycles(50000);
 }
 
 void initializeLEDPorts(){
