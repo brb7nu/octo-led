@@ -13,7 +13,7 @@
 #define BLANK BIT4
 #define LATCH BIT0
 #define SI BIT7
-
+ 
 #define N_LED BIT7
 #define NE_LED BIT6
 #define E_LED BIT5
