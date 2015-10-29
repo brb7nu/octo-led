@@ -26,12 +26,17 @@
 typedef struct
 {
 	int dutyCycle; // TODO maybe change to on ticks?
+	int onTimeRemaining;
 } LEDLightDefinition;
 
 typedef struct
 {
 	LEDLightDefinition leds[8];
 } LEDRingDefinition;
+
+void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber);
+void allLEDsOff(LEDRingDefinition *ring);
+void updateRing(LEDRingDefinition *ring);
 
 void initializeLEDS();
 void lightLED(unsigned char LED);

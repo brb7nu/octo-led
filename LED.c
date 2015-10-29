@@ -7,6 +7,50 @@
 #include <msp430.h>
 #include "LED.h"
 
+void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber)
+{
+	int lowerNeighbor = ledNumber - 1;
+	int higherNeighbor = ledNumber + 1;
+
+	if (ledNumber == 0)
+	{
+		lowerNeighbor = 7;
+	}
+	else if (ledNumber == 7)
+	{
+		higherNeighbor = 0;
+	}
+
+	// clear the current PWM settings
+	allLEDsOff(ring);
+
+	ring->leds[lowerNeighbor].dutyCycle = 30;
+	ring->leds[ledNumber].dutyCycle = 100;
+	ring->leds[higherNeighbor].dutyCycle = 30;	
+}
+
+void allLEDsOff(LEDRingDefinition *ring)
+{
+	int i;
+	for (i = 0; i < 8; i++)
+	{
+		ring->leds[i].dutyCycle = 0;
+	}
+}
+
+// Based on each 
+void updateRing(LEDRingDefinition *ring)
+{
+	// get downmost LED using CORDIC. TODO Or maybe do this outside of the led code, in main function?
+
+	// determine which LEDs to light based on their dutyCycles
+	int i;
+	for (i = 0; i < 8; i++)
+	{
+		// if (ring->leds[i].onTimeRemaining)
+	}
+}
+
 void initializeLEDS(){
 	int i = 0;
 	
@@ -39,8 +83,8 @@ void initializeLEDS(){
 
 }
 
-void lightLED(unsigned char LED){
-	send(LED);
+void lightLED(unsigned char mask){
+	send(mask);
 	enableLatch();
 	disableLatch();
 	_delay_cycles(30000);

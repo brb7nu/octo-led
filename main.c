@@ -12,7 +12,7 @@ int main(void) {
 	initializeLEDPins();			// intialize the LEDs
 	initializeLEDS();
 	
-	// STARTUP
+	// STARTUP STAGE
 	// initialize LED ring
 	// initialize accelerometer
 	AccelerometerDefinition accelerometer;
@@ -20,16 +20,18 @@ int main(void) {
 
 	// initialize PWM
 
-	// CALIBRATION
+	// CALIBRATION STAGE
 	calibrateAccelerometer(&accelerometer);
 
 	// NORMAL OPERATION -- LEVEL
 	while (1)
 	{
+		// read ADC
 
+		// CORDIC to figure out the LED to light
+
+		// Update the LED ring
 	}
-
-	
 
 	return 0;
 }
