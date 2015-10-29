@@ -13,7 +13,8 @@ typedef struct
 	int zMin;
 } AccelerometerDefinition;
 
-void initializeAccelerometer(AccelerometerDefinition *myAccelerometer);
-void calibrateAccelerometer(AccelerometerDefinition *myAccelerometer);
+void initializeAccelerometer(AccelerometerDefinition *accelerometer);
+void calibrateAccelerometer(AccelerometerDefinition *accelerometer);
+void updateAccelerometer(AccelerometerDefinition *accelerometer);
 
 #endif

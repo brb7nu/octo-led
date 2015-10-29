@@ -1,13 +1,8 @@
-/*
- * LED.h
- *
- *  Created on: Oct 27, 2015
- *      Author: Student
- */
 #ifndef LED_H_
 #define LED_H_
 
 #include <msp430.h>
+#include "timer.h"
 
 #define SCK BIT5
 #define BLANK BIT4
@@ -23,23 +18,33 @@
 #define W_LED BIT1
 #define NW_LED BIT0
 
+typedef enum {flash, cycle, pie} LEDAnimation;
 
-void initializeLEDS();
-void lightLED(unsigned char LED);
+typedef struct
+{
+	int dutyCycle; // TODO maybe change to on ticks?
+	int onTimeRemaining;
+	// TODO add pin and port
+} LEDLightDefinition;
 
+typedef struct
+{
+	LEDLightDefinition leds[8];
+	LEDAnimation animation;
+} LEDRingDefinition;
+
+void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber);
+void updateLEDRing(LEDRingDefinition *ring, TimerDefinition *timer);
+void initializeLEDRing(LEDRingDefinition *ring);
+void animateLEDs(LEDAnimation animation);
+void lightLEDs(unsigned char mask);
+
+// private SPI communication functions
 void send(unsigned char s);
-
-void initializeLEDPins();
-void initializeLEDPorts();
-
 void enableLatch();                         // Allows operations to be carried out on LED Driver
 void disableLatch();                        // Prevents operations from being carried out on LED Driver
-
 void enableBlank();                         //
 void disableBlank();                        //
-
 void pulseClock();                          // Causes a clock tick to be sent to LED Driver
-
-
 
 #endif /* LED_H_ */
