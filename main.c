@@ -8,10 +8,12 @@
 int main(void) {
     WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
 
-	initializeLEDPorts();
-	initializeLEDPins();			// intialize the LEDs
-	initializeLEDS();
-	
+    LEDRingDefinition ring;
+	initializeLEDRing(&ring);
+	animateLEDs(cycle);
+	animateLEDs(cycle);
+	animateLEDs(pie);
+
 	// STARTUP STAGE
 	// initialize LED ring
 	// initialize accelerometer

@@ -51,54 +51,64 @@ void updateRing(LEDRingDefinition *ring)
 	}
 }
 
-void initializeLEDS(){
-	int i = 0;
-	
-	for(i = 0; i<2; i++){
-		lightLED(N_LED);
-		lightLED(NE_LED);
-		lightLED(E_LED);
-		lightLED(SE_LED);
-		lightLED(S_LED);
-		lightLED(SW_LED);
-		lightLED(W_LED);
-		lightLED(NW_LED);
+void animateLEDs(LEDAnimation animation)
+{
+	switch (animation)
+	{
+		case pie:
+			lightLED(N_LED);
+			_delay_cycles(30000);
+			lightLED(NE_LED | N_LED);
+			_delay_cycles(30000);
+			lightLED(E_LED | NE_LED | N_LED);
+			_delay_cycles(30000);
+			lightLED(SE_LED | E_LED | NE_LED | N_LED);
+			_delay_cycles(30000);
+			lightLED(S_LED | SE_LED | E_LED | NE_LED | N_LED);
+			_delay_cycles(30000);
+			lightLED(SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
+			_delay_cycles(30000);
+			lightLED(W_LED | SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
+			_delay_cycles(30000);
+			lightLED(NW_LED | W_LED | SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
+			_delay_cycles(30000);
+			break;
+		case cycle:
+			lightLED(N_LED);
+			_delay_cycles(30000);
+			lightLED(NE_LED);
+			_delay_cycles(30000);
+			lightLED(E_LED);
+			_delay_cycles(30000);
+			lightLED(SE_LED);
+			_delay_cycles(30000);
+			lightLED(S_LED);
+			_delay_cycles(30000);
+			lightLED(SW_LED);
+			_delay_cycles(30000);
+			lightLED(W_LED);
+			_delay_cycles(30000);
+			lightLED(NW_LED);
+			_delay_cycles(30000);
+			break;
+		default:
+			break;
 	}
-
-	lightLED(N_LED);
-
-	lightLED(NE_LED | N_LED);
-
-	lightLED(E_LED | NE_LED | N_LED);
-
-	lightLED(SE_LED | E_LED | NE_LED | N_LED);
-
-	lightLED(S_LED | SE_LED | E_LED | NE_LED | N_LED);
-
-	lightLED(SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
-
-	lightLED(W_LED | SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
-
-	lightLED(NW_LED | W_LED | SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
-
 }
 
 void lightLED(unsigned char mask){
 	send(mask);
 	enableLatch();
 	disableLatch();
-	_delay_cycles(30000);
 }
 
-void initializeLEDPorts(){
+void initializeLEDRing(LEDRingDefinition *ring){
 	P1OUT &= ~( SCK | SI | BLANK);
 	P2OUT |= ( LATCH );
 
 	P1DIR |= ( SCK | SI | BLANK);
 	P2DIR |= ( LATCH );
-}
 
-void initializeLEDPins(){
 	P1DIR |= N_LED;
 	P1DIR |= NE_LED;
 	P1DIR |= E_LED;

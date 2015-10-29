@@ -27,6 +27,7 @@ typedef struct
 {
 	int dutyCycle; // TODO maybe change to on ticks?
 	int onTimeRemaining;
+	// TODO add pin and port
 } LEDLightDefinition;
 
 typedef struct
@@ -34,26 +35,21 @@ typedef struct
 	LEDLightDefinition leds[8];
 } LEDRingDefinition;
 
+typedef enum {cycle, pie} LEDAnimation;
+
 void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber);
 void allLEDsOff(LEDRingDefinition *ring);
 void updateRing(LEDRingDefinition *ring);
-
-void initializeLEDS();
+void initializeLEDRing(LEDRingDefinition *ring);
+void animateLEDs(LEDAnimation animation);
 void lightLEDs(unsigned char mask);
 
+// private SPI communication functions
 void send(unsigned char s);
-
-void initializeLEDPins();
-void initializeLEDPorts();
-
 void enableLatch();                         // Allows operations to be carried out on LED Driver
 void disableLatch();                        // Prevents operations from being carried out on LED Driver
-
 void enableBlank();                         //
 void disableBlank();                        //
-
 void pulseClock();                          // Causes a clock tick to be sent to LED Driver
-
-
 
 #endif /* LED_H_ */
