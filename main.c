@@ -9,6 +9,13 @@
 #include "debounce.h"
 #include "msp430io.h"
 
+// #define LEFT_RED_TP XOUT // P1.0
+// #define LEFT_WHITE_TP YOUT // P1.1
+// #define LEFT_YELLOW_TP ZOUT // P1.2
+// #define RIGHT_YELLOW_TP SIN
+// #define RIGHT_WHITE_TP SCLK
+// #define RIGHT_RED_TP XLATCH
+
 typedef enum {initialize, calibrationIndicate, calibrationMeasure, calibrationStore, levelReadADC, levelLighLEDs, levelCORDIC} SystemState;
 
 int main(void) {
@@ -65,7 +72,7 @@ int main(void) {
 				}
 				break;
 			case calibrationMeasure:
-				// take 8 samples
+				// read the 8-sample buffer for x, y, or z
 				ring.animation = cycle;
 				systemState = calibrationIndicate;
 				break;
