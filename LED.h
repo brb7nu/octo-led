@@ -39,7 +39,7 @@ void allLEDsOff(LEDRingDefinition *ring);
 void updateRing(LEDRingDefinition *ring);
 
 void initializeLEDS();
-void lightLED(unsigned char LED);
+void lightLEDs(unsigned char mask);
 
 void send(unsigned char s);
 
