@@ -9,16 +9,19 @@
 #include "debounce.h"
 #include "msp430io.h"
 
-int main(void) {
-    WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
+typedef enum {initialize, calibrationIndicate, calibrationMeasure, calibrationStore, levelReadADC, levelLighLEDs, levelCORDIC} SystemState;
 
-    // ---------------- INITIALIZE STATE ----------------
-    // initialize timer
-    TimerDefinition timer;
-    initializeTimer(&timer);
+int main(void) {
+	WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
+
+	SystemState systemState = initialize;
+
+	// initialize timer
+	TimerDefinition timer;
+	initializeTimer(&timer);
 
 	// initialize LED ring
-    LEDRingDefinition ring;
+	LEDRingDefinition ring;
 	initializeLEDRing(&ring);
 
 	// initialize accelerometer
@@ -34,35 +37,49 @@ int main(void) {
 	// Animate LEDs to indicate that initialization state is completed
 	animateLEDs(cycle);
 	animateLEDs(cycle);
-	animateLEDs(pie);
+	animateLEDs(pie); // TODO Do these using timers instead?
 
-	// ---------------- INDICATE STATE ----------------
-	// flash all LEDs to tell user to calibrate
+	_BIS_SR(GIE);
 
-	// ---------------- WAITBUTTON STATE ----------------
-	int i = 0;
-	while (accelerometer.isCalibrated)
+	while (1)
 	{
 		updateTimer(&timer);
 		updateButtonState(&pushButton, &timer);
-		if (pushButton.state == pressed)
+		updateLEDRing(&ring, &timer);
+		updateAccelerometer(&accelerometer);
+
+		switch (systemState)
 		{
-			// calibrate this axis
-			calibrateAccelerometerAxis(&accelerometer, );
-			i++;
+			case initialize:
+				systemState = calibrationIndicate;
+				break;
+			case calibrationIndicate:
+				// flash all LEDs to tell user to calibrate
+				ring.animation = flash;
+
+				// exit conditions for this state
+				if (pushButton.state == pressed)
+				{
+					// calibrate this axis
+					systemState = calibrationMeasure;
+				}
+				break;
+			case calibrationMeasure:
+				// take 8 samples
+				ring.animation = cycle;
+				systemState = calibrationIndicate;
+				break;
+			case calibrationStore:
+				break;
+			case levelReadADC:
+				break;
+			case levelLighLEDs:
+				break;
+			case levelCORDIC:
+				break;
+			default:
+				break;
 		}
-
-		// TODO Need an exit condition
-	}
-
-	// NORMAL OPERATION -- LEVEL
-	while (1)
-	{
-		// read ADC
-
-		// CORDIC to figure out the LED to light
-
-		// Update the LED ring
 	}
 
 	return 0;

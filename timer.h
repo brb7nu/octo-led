@@ -3,10 +3,11 @@
 
 #include <msp430.h>
 
-extern unsigned int g1mSTimeout;
+extern unsigned int g10uSTimeout;
 
 typedef struct
 {
+	unsigned int microseconds;
 	unsigned int milliseconds;
 	unsigned int seconds;
 	unsigned int minutes;

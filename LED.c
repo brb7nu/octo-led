@@ -1,10 +1,3 @@
-/*
- * LED.c
- *
- *  Created on: Oct 27, 2015
- *      Author: Student
- */
-#include <msp430.h>
 #include "LED.h"
 
 void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber)
@@ -38,16 +31,15 @@ void allLEDsOff(LEDRingDefinition *ring)
 	}
 }
 
-// Based on each 
-void updateRing(LEDRingDefinition *ring)
+void updateLEDRing(LEDRingDefinition *ring, TimerDefinition *timer)
 {
-	// get downmost LED using CORDIC. TODO Or maybe do this outside of the led code, in main function?
+	// use ring->animation and timer to light the right LEDs
 
-	// determine which LEDs to light based on their dutyCycles
+	// for each LEDLightDefinition in the ring, use the timer to determine whether it should be lit or dark
 	int i;
 	for (i = 0; i < 8; i++)
 	{
-		// if (ring->leds[i].onTimeRemaining)
+		// ring->leds[i].
 	}
 }
 
@@ -56,47 +48,47 @@ void animateLEDs(LEDAnimation animation)
 	switch (animation)
 	{
 		case pie:
-			lightLED(N_LED);
-			_delay_cycles(30000);
-			lightLED(NE_LED | N_LED);
-			_delay_cycles(30000);
-			lightLED(E_LED | NE_LED | N_LED);
-			_delay_cycles(30000);
-			lightLED(SE_LED | E_LED | NE_LED | N_LED);
-			_delay_cycles(30000);
-			lightLED(S_LED | SE_LED | E_LED | NE_LED | N_LED);
-			_delay_cycles(30000);
-			lightLED(SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
-			_delay_cycles(30000);
-			lightLED(W_LED | SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
-			_delay_cycles(30000);
-			lightLED(NW_LED | W_LED | SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
-			_delay_cycles(30000);
+			lightLEDs(N_LED);
+			_delay_cycles(1600000);
+			lightLEDs(NE_LED | N_LED);
+			_delay_cycles(1600000);
+			lightLEDs(E_LED | NE_LED | N_LED);
+			_delay_cycles(1600000);
+			lightLEDs(SE_LED | E_LED | NE_LED | N_LED);
+			_delay_cycles(1600000);
+			lightLEDs(S_LED | SE_LED | E_LED | NE_LED | N_LED);
+			_delay_cycles(1600000);
+			lightLEDs(SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
+			_delay_cycles(1600000);
+			lightLEDs(W_LED | SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
+			_delay_cycles(1600000);
+			lightLEDs(NW_LED | W_LED | SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
+			_delay_cycles(1600000);
 			break;
 		case cycle:
-			lightLED(N_LED);
-			_delay_cycles(30000);
-			lightLED(NE_LED);
-			_delay_cycles(30000);
-			lightLED(E_LED);
-			_delay_cycles(30000);
-			lightLED(SE_LED);
-			_delay_cycles(30000);
-			lightLED(S_LED);
-			_delay_cycles(30000);
-			lightLED(SW_LED);
-			_delay_cycles(30000);
-			lightLED(W_LED);
-			_delay_cycles(30000);
-			lightLED(NW_LED);
-			_delay_cycles(30000);
+			lightLEDs(N_LED);
+			_delay_cycles(1600000);
+			lightLEDs(NE_LED);
+			_delay_cycles(1600000);
+			lightLEDs(E_LED);
+			_delay_cycles(1600000);
+			lightLEDs(SE_LED);
+			_delay_cycles(1600000);
+			lightLEDs(S_LED);
+			_delay_cycles(1600000);
+			lightLEDs(SW_LED);
+			_delay_cycles(1600000);
+			lightLEDs(W_LED);
+			_delay_cycles(1600000);
+			lightLEDs(NW_LED);
+			_delay_cycles(1600000);
 			break;
 		default:
 			break;
 	}
 }
 
-void lightLED(unsigned char mask){
+void lightLEDs(unsigned char mask){
 	send(mask);
 	enableLatch();
 	disableLatch();

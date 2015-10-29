@@ -1,19 +1,14 @@
-/*
- * LED.h
- *
- *  Created on: Oct 27, 2015
- *      Author: Student
- */
 #ifndef LED_H_
 #define LED_H_
 
 #include <msp430.h>
+#include "timer.h"
 
 #define SCK BIT5
 #define BLANK BIT4
 #define LATCH BIT0
 #define SI BIT7
- 
+
 #define N_LED BIT7
 #define NE_LED BIT6
 #define E_LED BIT5
@@ -22,6 +17,8 @@
 #define SW_LED BIT2
 #define W_LED BIT1
 #define NW_LED BIT0
+
+typedef enum {flash, cycle, pie} LEDAnimation;
 
 typedef struct
 {
@@ -33,13 +30,11 @@ typedef struct
 typedef struct
 {
 	LEDLightDefinition leds[8];
+	LEDAnimation animation;
 } LEDRingDefinition;
 
-typedef enum {cycle, pie} LEDAnimation;
-
 void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber);
-void allLEDsOff(LEDRingDefinition *ring);
-void updateRing(LEDRingDefinition *ring);
+void updateLEDRing(LEDRingDefinition *ring, TimerDefinition *timer);
 void initializeLEDRing(LEDRingDefinition *ring);
 void animateLEDs(LEDAnimation animation);
 void lightLEDs(unsigned char mask);
