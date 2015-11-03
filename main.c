@@ -11,14 +11,41 @@
 // #define RIGHT_WHITE_TP SCLK
 // #define RIGHT_RED_TP XLATCH
 
+#define SCK BIT5
+#define BLANK BIT4
+#define LATCH BIT0
+#define SI BIT7
+
 // stores the number of milliseconds each led must stay on
 int ledRing[8];
 
 // NO need for LED mask because it just holds the non-zero values in ledRing
 
-void send(char mask)
+void lightLEDs(unsigned char mask)
 {
-	// SPI send the mask to the LED ring
+	send(mask);
+	P2OUT |= LATCH;
+	P2OUT &= ~LATCH;
+}
+
+void send(unsigned char s)
+{
+	unsigned char bit = 0x80;
+
+	while (bit)
+	{
+		if (s & bit)
+		{
+			P1OUT |= SI;
+		}
+		else
+		{
+			P1OUT &= ~SI;
+		}
+		bit >>= 1;
+		P1OUT |= SCK;
+		P1OUT &= ~SCK;
+	}
 }
 
 // send a mask based on the LEDs that still have high time remaining
@@ -37,15 +64,22 @@ void pwm()
 		}
 	}
 
-	send(mask);
+	lightLEDs(mask);
 }
 
-int main(void) {
+int main(void)
+{
 	WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
 
 	// initialize timer
 	TimerDefinition timer;
 	initializeTimer(&timer);
+
+	P1OUT &= ~( SCK | SI | BLANK);
+	P2OUT |= ( LATCH );
+
+	P1DIR |= ( SCK | SI | BLANK);
+	P2DIR |= ( LATCH );
 
 	_BIS_SR(GIE);
 
