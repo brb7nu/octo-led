@@ -20,15 +20,14 @@
 
 typedef struct
 {
-	int eventTime; // TODO maybe change to on ticks?
-	int onTime;
+	int onTimeRemaining;
 	// TODO add pin and port
-	int lit;
 } LEDLightDefinition;
 
 typedef struct
 {
 	LEDLightDefinition leds[8];
+	char ringMask;
 } LEDRingDefinition;
 
 void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber, TimerDefinition *timer);

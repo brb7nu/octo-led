@@ -14,38 +14,32 @@ void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber, TimerDefinitio
 		higherNeighbor = 0;
 	}
 
-	ring->leds[lowerNeighbor].eventTime = timer->microseconds;
-	ring->leds[lowerNeighbor].onTime = 500;
-	ring->leds[ledNumber].eventTime = timer->microseconds;
-	ring->leds[ledNumber].onTime = 1000;
-	ring->leds[higherNeighbor].eventTime = timer->microseconds;
-	ring->leds[higherNeighbor].onTime = 500;
+	ring->leds[lowerNeighbor].onTimeRemaining = 500;
+	ring->leds[ledNumber].onTimeRemaining = 1000;
+	ring->leds[higherNeighbor].onTimeRemaining = 500;
 }
 
 void updateLEDRing(LEDRingDefinition *ring, TimerDefinition *timer)
 {
-	// use ring->animation and timer to light the right LEDs
-
 	// for each LEDLightDefinition in the ring, use the timer to determine whether it should be lit or dark
-	unsigned char mask;
 	int i;
 	for (i = 0; i < 8; i++)
 	{
-		if (timer->microseconds - ring->leds[i].eventTime > ring->leds[i].onTime)
+		if (ring->leds[i].onTimeRemaining > 0)
 		{
-			// turn it off
+			ring->leds[i].onTimeRemaining--;
 		}
 		else
 		{
 			// turn it off
-			mask += 1 << i;
+			ring->ringMask &= ~(1 << i);
 		}
 	}
 
-	lightLEDs(mask);
+	sendLEDMask(ring->ringMask);
 }
 
-void lightLEDs(unsigned char mask){
+void sendLEDMask(unsigned char mask){
 	send(mask);
 	enableLatch();
 	disableLatch();
@@ -66,6 +60,14 @@ void initializeLEDRing(LEDRingDefinition *ring){
 	P1DIR |= SW_LED;
 	P1DIR |= W_LED;
 	P1DIR |= NW_LED;
+
+	int i;
+	for (i = 0; i < 8; i++)
+	{
+		ring->leds[i].onTimeRemaining = 500;
+	}
+
+	ring->ringMask = 0x00;
 }
 
 void send(unsigned char s){

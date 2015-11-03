@@ -56,6 +56,15 @@ void updateTimer(TimerDefinition *timer)
 	}
 }
 
+void resetTimer(TimerDefinition *timer)
+{
+	timer->microseconds = 0;
+	timer->milliseconds = 0;
+	timer->seconds = 0;
+	timer->minutes = 0;
+	timer->hours = 0;
+}
+
 #pragma vector = TIMER0_A0_VECTOR // Timer A interrupt service routine
 __interrupt void TimerA0_routine(void)
 {

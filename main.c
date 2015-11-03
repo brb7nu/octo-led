@@ -42,54 +42,54 @@ int main(void) {
 	// initialize PWM
 
 	// Animate LEDs to indicate that initialization state is completed
-	lightLEDs(N_LED);
-	_delay_cycles(1600000);
-	lightLEDs(NE_LED);
-	_delay_cycles(1600000);
-	lightLEDs(E_LED);
-	_delay_cycles(1600000);
-	lightLEDs(SE_LED);
-	_delay_cycles(1600000);
-	lightLEDs(S_LED);
-	_delay_cycles(1600000);
-	lightLEDs(SW_LED);
-	_delay_cycles(1600000);
-	lightLEDs(W_LED);
-	_delay_cycles(1600000);
-	lightLEDs(NW_LED);
-	_delay_cycles(1600000);
-	lightLEDs(N_LED);
-	_delay_cycles(1600000);
-	lightLEDs(NE_LED);
-	_delay_cycles(1600000);
-	lightLEDs(E_LED);
-	_delay_cycles(1600000);
-	lightLEDs(SE_LED);
-	_delay_cycles(1600000);
-	lightLEDs(S_LED);
-	_delay_cycles(1600000);
-	lightLEDs(SW_LED);
-	_delay_cycles(1600000);
-	lightLEDs(W_LED);
-	_delay_cycles(1600000);
-	lightLEDs(NW_LED);
-	_delay_cycles(1600000);
-	lightLEDs(N_LED);
-	_delay_cycles(1600000);
-	lightLEDs(NE_LED | N_LED);
-	_delay_cycles(1600000);
-	lightLEDs(E_LED | NE_LED | N_LED);
-	_delay_cycles(1600000);
-	lightLEDs(SE_LED | E_LED | NE_LED | N_LED);
-	_delay_cycles(1600000);
-	lightLEDs(S_LED | SE_LED | E_LED | NE_LED | N_LED);
-	_delay_cycles(1600000);
-	lightLEDs(SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
-	_delay_cycles(1600000);
-	lightLEDs(W_LED | SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
-	_delay_cycles(1600000);
-	lightLEDs(NW_LED | W_LED | SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
-	_delay_cycles(1600000);
+	sendLEDMask(N_LED);
+	_delay_cycles(800000);
+	sendLEDMask(NE_LED);
+	_delay_cycles(800000);
+	sendLEDMask(E_LED);
+	_delay_cycles(800000);
+	sendLEDMask(SE_LED);
+	_delay_cycles(800000);
+	sendLEDMask(S_LED);
+	_delay_cycles(800000);
+	sendLEDMask(SW_LED);
+	_delay_cycles(800000);
+	sendLEDMask(W_LED);
+	_delay_cycles(800000);
+	sendLEDMask(NW_LED);
+	_delay_cycles(800000);
+	sendLEDMask(N_LED);
+	_delay_cycles(800000);
+	sendLEDMask(NE_LED);
+	_delay_cycles(800000);
+	sendLEDMask(E_LED);
+	_delay_cycles(800000);
+	sendLEDMask(SE_LED);
+	_delay_cycles(800000);
+	sendLEDMask(S_LED);
+	_delay_cycles(800000);
+	sendLEDMask(SW_LED);
+	_delay_cycles(800000);
+	sendLEDMask(W_LED);
+	_delay_cycles(800000);
+	sendLEDMask(NW_LED);
+	_delay_cycles(800000);
+	sendLEDMask(N_LED);
+	_delay_cycles(800000);
+	sendLEDMask(NE_LED | N_LED);
+	_delay_cycles(800000);
+	sendLEDMask(E_LED | NE_LED | N_LED);
+	_delay_cycles(800000);
+	sendLEDMask(SE_LED | E_LED | NE_LED | N_LED);
+	_delay_cycles(800000);
+	sendLEDMask(S_LED | SE_LED | E_LED | NE_LED | N_LED);
+	_delay_cycles(800000);
+	sendLEDMask(SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
+	_delay_cycles(800000);
+	sendLEDMask(W_LED | SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
+	_delay_cycles(800000);
+	sendLEDMask(NW_LED | W_LED | SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
+	_delay_cycles(800000);
 
 	_BIS_SR(GIE);
 
@@ -97,44 +97,43 @@ int main(void) {
 	{
 		updateTimer(&timer);
 		updateButtonState(&pushButton, &timer);
-		updateLEDRing(&ring, &timer);
 		// updateAccelerometer(&accelerometer);
+		updateLEDRing(&ring, &timer);
 
-		lightLEDAndNeighbors(&ring, 3, &timer);
+		switch (systemState)
+		{
+			case initialize:
+				systemState = calibrationIndicate;
+				break;
+			case calibrationIndicate:
+				// flash all LEDs to tell user to calibrate
 
-		// switch (systemState)
-		// {
-		// 	case initialize:
-		// 		systemState = calibrationIndicate;
 
-
-
-		// 		break;
-		// 	case calibrationIndicate:
-		// 		// flash all LEDs to tell user to calibrate
-
-		// 		// exit conditions for this state
-		// 		if (pushButton.state == pressed)
-		// 		{
-		// 			// calibrate this axis
-		// 			systemState = calibrationMeasure;
-		// 		}
-		// 		break;
-		// 	case calibrationMeasure:
-		// 		// read the 8-sample buffer for x, y, or z
-		// 		systemState = calibrationIndicate;
-		// 		break;
-		// 	case calibrationStore:
-		// 		break;
-		// 	case levelReadADC:
-		// 		break;
-		// 	case levelLighLEDs:
-		// 		break;
-		// 	case levelCORDIC:
-		// 		break;
-		// 	default:
-		// 		break;
-		// }
+				// exit conditions for this state
+				if (pushButton.state == pressed)
+				{
+					// calibrate this axis
+					systemState = calibrationMeasure;
+				}
+				break;
+			case calibrationMeasure:
+				// read the 8-sample buffer for x, y, or z
+				P1OUT |= BIT6;
+				_delay_cycles(6400000);
+				P1OUT &= ~BIT6;
+				systemState = calibrationIndicate;
+				break;
+			case calibrationStore:
+				break;
+			case levelReadADC:
+				break;
+			case levelLighLEDs:
+				break;
+			case levelCORDIC:
+				break;
+			default:
+				break;
+		}
 	}
 
 	return 0;
