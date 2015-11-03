@@ -18,25 +18,22 @@
 #define W_LED BIT1
 #define NW_LED BIT0
 
-typedef enum {flash, cycle, pie} LEDAnimation;
-
 typedef struct
 {
-	int dutyCycle; // TODO maybe change to on ticks?
-	int onTimeRemaining;
+	int eventTime; // TODO maybe change to on ticks?
+	int onTimeMS;
 	// TODO add pin and port
+	int lit;
 } LEDLightDefinition;
 
 typedef struct
 {
 	LEDLightDefinition leds[8];
-	LEDAnimation animation;
 } LEDRingDefinition;
 
-void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber);
+void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber, TimerDefinition *timer);
 void updateLEDRing(LEDRingDefinition *ring, TimerDefinition *timer);
 void initializeLEDRing(LEDRingDefinition *ring);
-void animateLEDs(LEDAnimation animation);
 void lightLEDs(unsigned char mask);
 
 // private SPI communication functions

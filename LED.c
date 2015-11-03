@@ -1,6 +1,6 @@
 #include "LED.h"
 
-void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber)
+void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber, TimerDefinition *timer)
 {
 	int lowerNeighbor = ledNumber - 1;
 	int higherNeighbor = ledNumber + 1;
@@ -14,21 +14,12 @@ void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber)
 		higherNeighbor = 0;
 	}
 
-	// clear the current PWM settings
-	allLEDsOff(ring);
-
-	ring->leds[lowerNeighbor].dutyCycle = 30;
-	ring->leds[ledNumber].dutyCycle = 100;
-	ring->leds[higherNeighbor].dutyCycle = 30;	
-}
-
-void allLEDsOff(LEDRingDefinition *ring)
-{
-	int i;
-	for (i = 0; i < 8; i++)
-	{
-		ring->leds[i].dutyCycle = 0;
-	}
+	ring->leds[lowerNeighbor].eventTime = timer->milliseconds;
+	ring->leds[lowerNeighbor].onTimeMS = 2;
+	ring->leds[ledNumber].eventTime = timer->milliseconds;
+	ring->leds[ledNumber].onTimeMS = 4;
+	ring->leds[higherNeighbor].eventTime = timer->milliseconds;
+	ring->leds[higherNeighbor].onTimeMS = 2;
 }
 
 void updateLEDRing(LEDRingDefinition *ring, TimerDefinition *timer)
@@ -36,63 +27,27 @@ void updateLEDRing(LEDRingDefinition *ring, TimerDefinition *timer)
 	// use ring->animation and timer to light the right LEDs
 
 	// for each LEDLightDefinition in the ring, use the timer to determine whether it should be lit or dark
+	unsigned char mask;
 	int i;
 	for (i = 0; i < 8; i++)
 	{
-		// ring->leds[i].
+		if (timer->milliseconds - ring->leds[i].eventTime > ring->leds[i].onTimeMS)
+		{
+			// turn it off
+		}
+		else
+		{
+			mask += 1 << i;
+		}
 	}
-}
 
-void animateLEDs(LEDAnimation animation)
-{
-	switch (animation)
-	{
-		case pie:
-			lightLEDs(N_LED);
-			_delay_cycles(1600000);
-			lightLEDs(NE_LED | N_LED);
-			_delay_cycles(1600000);
-			lightLEDs(E_LED | NE_LED | N_LED);
-			_delay_cycles(1600000);
-			lightLEDs(SE_LED | E_LED | NE_LED | N_LED);
-			_delay_cycles(1600000);
-			lightLEDs(S_LED | SE_LED | E_LED | NE_LED | N_LED);
-			_delay_cycles(1600000);
-			lightLEDs(SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
-			_delay_cycles(1600000);
-			lightLEDs(W_LED | SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
-			_delay_cycles(1600000);
-			lightLEDs(NW_LED | W_LED | SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
-			_delay_cycles(1600000);
-			break;
-		case cycle:
-			lightLEDs(N_LED);
-			_delay_cycles(1600000);
-			lightLEDs(NE_LED);
-			_delay_cycles(1600000);
-			lightLEDs(E_LED);
-			_delay_cycles(1600000);
-			lightLEDs(SE_LED);
-			_delay_cycles(1600000);
-			lightLEDs(S_LED);
-			_delay_cycles(1600000);
-			lightLEDs(SW_LED);
-			_delay_cycles(1600000);
-			lightLEDs(W_LED);
-			_delay_cycles(1600000);
-			lightLEDs(NW_LED);
-			_delay_cycles(1600000);
-			break;
-		default:
-			break;
-	}
+	lightLEDs(mask);
 }
 
 void lightLEDs(unsigned char mask){
 	send(mask);
 	enableLatch();
 	disableLatch();
-
 }
 
 void initializeLEDRing(LEDRingDefinition *ring){

@@ -11,6 +11,9 @@ typedef struct
 	int yMin;
 	int zMax;
 	int zMin;
+	int xVal;
+	int yVal;
+	int zVal;
 } AccelerometerDefinition;
 
 void initializeAccelerometer(AccelerometerDefinition *accelerometer);
