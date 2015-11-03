@@ -57,15 +57,6 @@ void initializeLEDRing(LEDRingDefinition *ring){
 
 	P1DIR |= ( SCK | SI | BLANK);
 	P2DIR |= ( LATCH );
-
-	P1DIR |= N_LED;
-	P1DIR |= NE_LED;
-	P1DIR |= E_LED;
-	P1DIR |= SE_LED;
-	P1DIR |= S_LED;
-	P1DIR |= SW_LED;
-	P1DIR |= W_LED;
-	P1DIR |= NW_LED;
 }
 
 void send(unsigned char s){
