@@ -97,10 +97,10 @@ int main(void) {
 	{
 		updateTimer(&timer);
 		updateButtonState(&pushButton, &timer);
-		updateLEDRing(&ring, &timer);
-		// updateAccelerometer(&accelerometer);
+		//updateLEDRing(&ring, &timer);
+		updateAccelerometer(&accelerometer);
 
-		lightLEDAndNeighbors(&ring, 3, &timer);
+		//lightLEDAndNeighbors(&ring, 3, &timer);
 
 		// switch (systemState)
 		// {
