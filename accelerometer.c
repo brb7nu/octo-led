@@ -37,9 +37,12 @@ void updateAccelerometer(AccelerometerDefinition *accelerometer)
 	accelerometer->xVal = measurements[0];
 }
 
+<<<<<<< HEAD
+=======
 // ADC10 interrupt service routine
 #pragma vector=ADC10_VECTOR
 __interrupt void ADC10_ISR (void)
 {
 	__bic_SR_register_on_exit(CPUOFF);        // Clear CPUOFF bit from 0(SR)
+>>>>>>> f2490c757720dffe2a356dd7edfe079e66c47a6d
 }
