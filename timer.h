@@ -3,7 +3,7 @@
 
 #include <msp430.h>
 
-extern unsigned int g10uSTimeout;
+extern unsigned int interruptTimeout;
 
 typedef struct
 {
@@ -16,6 +16,7 @@ typedef struct
 
 void initializeTimer(TimerDefinition *timer);
 void updateTimer(TimerDefinition *timer);
+void resetTimer(TimerDefinition *timer);
 __interrupt void TimerA0_routine(void);
 
 #endif
