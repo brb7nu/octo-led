@@ -14,12 +14,12 @@ void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber, TimerDefinitio
 		higherNeighbor = 0;
 	}
 
-	ring->leds[lowerNeighbor].eventTime = timer->milliseconds;
-	ring->leds[lowerNeighbor].onTimeMS = 2;
-	ring->leds[ledNumber].eventTime = timer->milliseconds;
-	ring->leds[ledNumber].onTimeMS = 4;
-	ring->leds[higherNeighbor].eventTime = timer->milliseconds;
-	ring->leds[higherNeighbor].onTimeMS = 2;
+	ring->leds[lowerNeighbor].eventTime = timer->microseconds;
+	ring->leds[lowerNeighbor].onTime = 500;
+	ring->leds[ledNumber].eventTime = timer->microseconds;
+	ring->leds[ledNumber].onTime = 1000;
+	ring->leds[higherNeighbor].eventTime = timer->microseconds;
+	ring->leds[higherNeighbor].onTime = 500;
 }
 
 void updateLEDRing(LEDRingDefinition *ring, TimerDefinition *timer)
@@ -31,12 +31,13 @@ void updateLEDRing(LEDRingDefinition *ring, TimerDefinition *timer)
 	int i;
 	for (i = 0; i < 8; i++)
 	{
-		if (timer->milliseconds - ring->leds[i].eventTime > ring->leds[i].onTimeMS)
+		if (timer->microseconds - ring->leds[i].eventTime > ring->leds[i].onTime)
 		{
 			// turn it off
 		}
 		else
 		{
+			// turn it off
 			mask += 1 << i;
 		}
 	}

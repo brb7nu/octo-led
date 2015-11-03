@@ -21,7 +21,7 @@
 typedef struct
 {
 	int eventTime; // TODO maybe change to on ticks?
-	int onTimeMS;
+	int onTime;
 	// TODO add pin and port
 	int lit;
 } LEDLightDefinition;
