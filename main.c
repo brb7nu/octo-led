@@ -16,16 +16,17 @@
 #define SI BIT7
 
 // stores the number of milliseconds each led must stay on
-int ledRing[8];
+int ledRingHighTimeRemaining[8];
 
-// NO need for LED mask because it just holds the non-zero values in ledRing
+// stores the high times in milliseconds for each LED in the ring
+// this is different than ledRingHighTimeRemaining because it does not get decremented
+int ledRingHighTimeMS[8];
 
-void lightLEDs(unsigned char mask)
-{
-	send(mask);
-	P2OUT |= LATCH;
-	P2OUT &= ~LATCH;
-}
+int pwmSegmentCount;
+
+char mask = 0x00;
+
+// NO need for LED mask because it just holds the non-zero values in ledRingHighTimeRemaining
 
 void send(unsigned char s)
 {
@@ -47,23 +48,20 @@ void send(unsigned char s)
 	}
 }
 
-// send a mask based on the LEDs that still have high time remaining
-// run this method at periodic intervals (base of pwm)
-void pwm()
+void lightLEDs(unsigned char mask)
 {
-	char mask = 0x00;
+	send(mask);
+	P2OUT |= LATCH;
+	P2OUT &= ~LATCH;
+}
 
+inline void reloadPWMTimes(void)
+{
 	int i;
 	for (i = 0; i < 8; i++)
 	{
-		if (ledRing[i])
-		{
-			mask |= (0x01 << i);
-			ledRing[i]--;
-		}
+		ledRingHighTimeRemaining[i] = ledRingHighTimeMS[i];
 	}
-
-	lightLEDs(mask);
 }
 
 int main(void)
@@ -79,8 +77,8 @@ int main(void)
 	TACTL = TASSEL_2 | ID_3 | MC_1 | TACLR;
 
 	// setup value for comparison
-	// 1 MHz / 8 = 125 kHz --> 125 ticks per ms
-	TACCR0 = 125;
+	// 1 MHz / 8 = 125 kHz --> 63 ticks per 500 us
+	TACCR0 = 63;
 
 	// enable interrupt on capture-compare control register 0
 	TACCTL0 |= CCIE;
@@ -90,19 +88,63 @@ int main(void)
 	P1DIR |= ( SCK | SI | BLANK);
 	P2DIR |= ( LATCH );
 
+	pwmSegmentCount = 0;
+	int i;
+	for (i = 0; i < 8; i++)
+	{
+		ledRingHighTimeRemaining[i] = 0;
+	}
+	ledRingHighTimeMS[3] = 1;
+	ledRingHighTimeMS[4] = 5;
+	ledRingHighTimeMS[5] = 10;
+	ledRingHighTimeMS[6] = 15;
+	ledRingHighTimeMS[7] = 20;
+
+
 	_BIS_SR(GIE);
+
+
 
 	while (1)
 	{
-		
+		lightLEDs(mask);
 	}
 
 	return 0;
 }
 
+//  ___         ___         ___        
+// |   |_______|   |_______|   |_______
+//  _______     _______     _______    
+// |       |___|       |___|       |___
+//  ___         ___         ___        
+// |   |_______|   |_______|   |_______
+//
+// ____________________________________
+// 
+// |---10 ms---|
 #pragma vector = TIMER0_A0_VECTOR // Timer A interrupt service routine
 __interrupt void TimerA0_routine(void)
 {
-	pwm();
+	if (pwmSegmentCount >= 20)
+	{
+		pwmSegmentCount = 0;
+		reloadPWMTimes();
+	}
+
+	mask = 0x00;
+
+	// send a mask based on the LEDs that still have high time remaining
+	int i;
+	for (i = 0; i < 8; i++)
+	{
+		if (ledRingHighTimeRemaining[i])
+		{
+			mask |= (0x01 << i);
+			ledRingHighTimeRemaining[i]--;
+		}
+	}
+
+	pwmSegmentCount++;
 }
 
