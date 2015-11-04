@@ -107,7 +107,7 @@ int main(void)
 
 	while (1)
 	{
-		lightLEDs(mask);
+
 	}
 
 	return 0;
@@ -144,6 +144,8 @@ __interrupt void TimerA0_routine(void)
 			ledRingHighTimeRemaining[i]--;
 		}
 	}
+
+	lightLEDs(mask);
 
 	pwmSegmentCount++;
 }
