@@ -77,9 +77,9 @@ int main(void)
 	TACTL = TASSEL_2 | ID_3 | MC_1 | TACLR;
 
 	// setup value for comparison
-	// 1 MHz / 8 = 125 kHz --> 63 ticks per 500 us
+	// 16 MHz / 8 = 2 MHz --> 200 ticks per 100 us
 	// TACCR0 = 63;
-	TACCR0 = 1000;
+	TACCR0 = 200;
 
 	// enable interrupt on capture-compare control register 0
 	TACCTL0 |= CCIE;
@@ -97,13 +97,13 @@ int main(void)
 	}
 
 	ledRingHighTimeMS[0] = 0;
-	ledRingHighTimeMS[1] = 0;
-	ledRingHighTimeMS[2] = 0;
-	ledRingHighTimeMS[3] = 0;
-	ledRingHighTimeMS[4] = 0;
-	ledRingHighTimeMS[5] = 0;
-	ledRingHighTimeMS[6] = 19;
-	ledRingHighTimeMS[7] = 0;
+	ledRingHighTimeMS[1] = 2;
+	ledRingHighTimeMS[2] = 4;
+	ledRingHighTimeMS[3] = 6;
+	ledRingHighTimeMS[4] = 8;
+	ledRingHighTimeMS[5] = 10;
+	ledRingHighTimeMS[6] = 15;
+	ledRingHighTimeMS[7] = 20;
 
 	_BIS_SR(GIE);
 
@@ -131,7 +131,7 @@ int main(void)
 #pragma vector = TIMER0_A0_VECTOR // Timer A interrupt service routine
 __interrupt void TimerA0_routine(void)
 {
-	if (pwmSegmentCount >= 20)
+	if (pwmSegmentCount >= 100)
 	{
 		pwmSegmentCount = 0;
 		reloadPWMTimes();
