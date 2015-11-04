@@ -15,6 +15,11 @@
 #define LATCH BIT0
 #define SI BIT7
 
+#define DUTY_CYCLE_BRIGHTEST 100
+#define DUTY_CYCLE_BRIGHT 20
+#define DUTY_CYCLE_DIM 5
+#define DUTY_CYCLE_DIMMEST 1
+
 // stores the number of milliseconds each led must stay on
 int ledRingHighTimeRemaining[8];
 
@@ -96,14 +101,9 @@ int main(void)
 		ledRingHighTimeRemaining[i] = 0;
 	}
 
-	ledRingHighTimeMS[0] = 0;
-	ledRingHighTimeMS[1] = 2;
-	ledRingHighTimeMS[2] = 4;
-	ledRingHighTimeMS[3] = 6;
-	ledRingHighTimeMS[4] = 8;
-	ledRingHighTimeMS[5] = 10;
-	ledRingHighTimeMS[6] = 15;
-	ledRingHighTimeMS[7] = 20;
+	ledRingHighTimeMS[5] = DUTY_CYCLE_DIMMEST;
+	ledRingHighTimeMS[6] = DUTY_CYCLE_BRIGHTEST;
+	ledRingHighTimeMS[7] = DUTY_CYCLE_DIMMEST;
 
 	_BIS_SR(GIE);
 
