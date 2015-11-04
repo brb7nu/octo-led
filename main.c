@@ -69,8 +69,8 @@ int main(void)
 	WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
 
 	// initialize timer
-	DCOCTL = CALDCO_1MHZ;  			// |Set clock speed to 1 MHz|
-	BCSCTL1 = CALBC1_1MHZ;  		// |                        |
+	DCOCTL = CALDCO_16MHZ;  			// |Set clock speed to 1 MHz|
+	BCSCTL1 = CALBC1_16MHZ;  		// |                        |
 
 	// setup Timer A
 	// SMCLK clock, divided by 4, in up mode, and start by clearing the timer
@@ -78,7 +78,8 @@ int main(void)
 
 	// setup value for comparison
 	// 1 MHz / 8 = 125 kHz --> 63 ticks per 500 us
-	TACCR0 = 63;
+	// TACCR0 = 63;
+	TACCR0 = 1000;
 
 	// enable interrupt on capture-compare control register 0
 	TACCTL0 |= CCIE;
@@ -94,16 +95,20 @@ int main(void)
 	{
 		ledRingHighTimeRemaining[i] = 0;
 	}
-	ledRingHighTimeMS[3] = 1;
-	ledRingHighTimeMS[4] = 5;
-	ledRingHighTimeMS[5] = 10;
-	ledRingHighTimeMS[6] = 15;
-	ledRingHighTimeMS[7] = 20;
 
+	ledRingHighTimeMS[0] = 0;
+	ledRingHighTimeMS[1] = 0;
+	ledRingHighTimeMS[2] = 0;
+	ledRingHighTimeMS[3] = 0;
+	ledRingHighTimeMS[4] = 0;
+	ledRingHighTimeMS[5] = 0;
+	ledRingHighTimeMS[6] = 19;
+	ledRingHighTimeMS[7] = 0;
 
 	_BIS_SR(GIE);
 
-
+	P1DIR |= (BIT6);
+	P1OUT |= BIT6;
 
 	while (1)
 	{
@@ -130,6 +135,7 @@ __interrupt void TimerA0_routine(void)
 	{
 		pwmSegmentCount = 0;
 		reloadPWMTimes();
+		P1OUT ^= BIT6;
 	}
 
 	mask = 0x00;
