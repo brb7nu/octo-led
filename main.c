@@ -2,7 +2,6 @@
 // Will Cray
 
 #include <msp430.h>
-#include "timer.h"
 
 // #define LEFT_RED_TP XOUT // P1.0
 // #define LEFT_WHITE_TP YOUT // P1.1
@@ -72,9 +71,19 @@ int main(void)
 	WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
 
 	// initialize timer
-	TimerDefinition timer;
-	initializeTimer(&timer);
+	DCOCTL = CALDCO_1MHZ;  			// |Set clock speed to 1 MHz|
+	BCSCTL1 = CALBC1_1MHZ;  		// |                        |
 
+	// setup Timer A
+	// SMCLK clock, divided by 4, in up mode, and start by clearing the timer
+	TACTL = TASSEL_2 | ID_3 | MC_1 | TACLR;
+
+	// setup value for comparison
+	// 1 MHz / 8 = 125 kHz --> 125 ticks per ms
+	TACCR0 = 125;
+
+	// enable interrupt on capture-compare control register 0
+	TACCTL0 |= CCIE;
 	P1OUT &= ~( SCK | SI | BLANK);
 	P2OUT |= ( LATCH );
 
@@ -85,13 +94,15 @@ int main(void)
 
 	while (1)
 	{
-		updateTimer(&timer);
-
-		if (timer.milliseconds > 15)
-		{
-			pwm();
-		}
+		
 	}
 
 	return 0;
 }
+
+#pragma vector = TIMER0_A0_VECTOR // Timer A interrupt service routine
+__interrupt void TimerA0_routine(void)
+{
+	pwm();
+}
+
