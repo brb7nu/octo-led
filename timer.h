@@ -3,7 +3,7 @@
 
 #include <msp430.h>
 
-extern unsigned int g10uSTimeout;
+extern unsigned int g100uSTimeout;
 
 typedef struct
 {

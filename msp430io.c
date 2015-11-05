@@ -8,9 +8,9 @@
 
 void initializeMSP430IO(ButtonDefinition *pushButton)
 {
-	// set up LED ports
-	// P1OUT &= ~(BIT0 + BIT6);
-	// P1DIR |= (BIT0 + BIT6);
+	// set up LED ports (only green)
+	P1OUT &= ~BIT6;
+	P1DIR |= BIT6;
 
 	// set up button (pin 1.3) for input
 	P1DIR &= ~BIT3;

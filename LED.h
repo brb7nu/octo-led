@@ -18,21 +18,33 @@
 #define W_LED BIT1
 #define NW_LED BIT0
 
+#define DUTY_CYCLE_BRIGHTEST 100
+#define DUTY_CYCLE_BRIGHT 20
+#define DUTY_CYCLE_DIM 5
+#define DUTY_CYCLE_DIMMEST 1
+
 typedef struct
 {
-	int eventTime; // TODO maybe change to on ticks?
-	int onTime;
+	int onTimeRemaining;
 	// TODO add pin and port
-	int lit;
 } LEDLightDefinition;
 
 typedef struct
 {
 	LEDLightDefinition leds[8];
+	char mask;
+
+	// stores the number of milliseconds each led must stay on
+	int dutyCycleRemaining[8];
+
+	// stores the high times in milliseconds for each LED in the ring
+	// this is different than ledRingHighTimeRemaining because it does not get decremented
+	int dutyCycle[8];
+	int dutyIndex;
 } LEDRingDefinition;
 
 void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber, TimerDefinition *timer);
-void updateLEDRing(LEDRingDefinition *ring, TimerDefinition *timer);
+void updateLEDRing(LEDRingDefinition *ring);
 void initializeLEDRing(LEDRingDefinition *ring);
 void lightLEDs(unsigned char mask);
 

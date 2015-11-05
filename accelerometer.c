@@ -29,6 +29,8 @@ void calibrateAccelerometer(AccelerometerDefinition *accelerometer) {
 
 }
 
+volatile unsigned int upCnt = 0;
+
 void updateAccelerometer(AccelerometerDefinition *accelerometer) {
 	volatile unsigned int measurements[3];
 
@@ -43,10 +45,12 @@ void updateAccelerometer(AccelerometerDefinition *accelerometer) {
 	// ADCMEM?
 
 	// TODO change to averaging code
-		accelerometer->xVal = measurements[0];	// get fresh x, y, z vals
-		accelerometer->yVal = measurements[1];
-		accelerometer->zVal = measurements[2];
-		filter(accelerometer);	// send those to the circular buffer
+	accelerometer->xVal = measurements[0];	// get fresh x, y, z vals
+	accelerometer->yVal = measurements[1];
+	accelerometer->zVal = measurements[2];
+	filter(accelerometer);	// send those to the circular buffer
+
+	upCnt++;
 }
 
 void filter(AccelerometerDefinition *accelerometer){

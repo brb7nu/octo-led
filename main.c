@@ -2,12 +2,11 @@
 // Will Cray
 
 #include <msp430.h>
-#include "accelerometer.h"
-#include "LED.h"
-#include "timer.h"
-#include "button.h"
-#include "debounce.h"
 #include "msp430io.h"
+#include "button.h"
+#include "timer.h"
+#include "led.h"
+#include "accelerometer.h"
 
 // #define LEFT_RED_TP XOUT // P1.0
 // #define LEFT_WHITE_TP YOUT // P1.1
@@ -16,80 +15,26 @@
 // #define RIGHT_WHITE_TP SCLK
 // #define RIGHT_RED_TP XLATCH
 
-typedef enum {initialize, calibrationIndicate, calibrationMeasure, calibrationStore, levelReadADC, levelLighLEDs, levelCORDIC} SystemState;
+#define SCK BIT5
+#define BLANK BIT4
+#define LATCH BIT0
+#define SI BIT7
 
-int main(void) {
+TimerDefinition timer;
+LEDRingDefinition ring;
+ButtonDefinition pushButton;
+AccelerometerDefinition accelerometer;
+
+// NO need for LED mask because it just holds the non-zero values in ledRingHighTimeRemaining
+
+int main(void)
+{
 	WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
 
-	SystemState systemState = initialize;
-
-	// initialize timer
-	TimerDefinition timer;
 	initializeTimer(&timer);
-
-	// initialize LED ring
-	LEDRingDefinition ring;
-	initializeLEDRing(&ring);
-
-	// initialize accelerometer
-	AccelerometerDefinition accelerometer;
-	initializeAccelerometer(&accelerometer);
-
-	// initialize button
-	ButtonDefinition pushButton;
 	initializeMSP430IO(&pushButton);
-
-	// initialize PWM
-
-	// Animate LEDs to indicate that initialization state is completed
-	lightLEDs(N_LED);
-	_delay_cycles(1600000);
-	lightLEDs(NE_LED);
-	_delay_cycles(1600000);
-	lightLEDs(E_LED);
-	_delay_cycles(1600000);
-	lightLEDs(SE_LED);
-	_delay_cycles(1600000);
-	lightLEDs(S_LED);
-	_delay_cycles(1600000);
-	lightLEDs(SW_LED);
-	_delay_cycles(1600000);
-	lightLEDs(W_LED);
-	_delay_cycles(1600000);
-	lightLEDs(NW_LED);
-	_delay_cycles(1600000);
-	lightLEDs(N_LED);
-	_delay_cycles(1600000);
-	lightLEDs(NE_LED);
-	_delay_cycles(1600000);
-	lightLEDs(E_LED);
-	_delay_cycles(1600000);
-	lightLEDs(SE_LED);
-	_delay_cycles(1600000);
-	lightLEDs(S_LED);
-	_delay_cycles(1600000);
-	lightLEDs(SW_LED);
-	_delay_cycles(1600000);
-	lightLEDs(W_LED);
-	_delay_cycles(1600000);
-	lightLEDs(NW_LED);
-	_delay_cycles(1600000);
-	lightLEDs(N_LED);
-	_delay_cycles(1600000);
-	lightLEDs(NE_LED | N_LED);
-	_delay_cycles(1600000);
-	lightLEDs(E_LED | NE_LED | N_LED);
-	_delay_cycles(1600000);
-	lightLEDs(SE_LED | E_LED | NE_LED | N_LED);
-	_delay_cycles(1600000);
-	lightLEDs(S_LED | SE_LED | E_LED | NE_LED | N_LED);
-	_delay_cycles(1600000);
-	lightLEDs(SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
-	_delay_cycles(1600000);
-	lightLEDs(W_LED | SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
-	_delay_cycles(1600000);
-	lightLEDs(NW_LED | W_LED | SW_LED | S_LED | SE_LED | E_LED | NE_LED | N_LED);
-	_delay_cycles(1600000);
+	initializeLEDRing(&ring);
+	initializeAccelerometer(&accelerometer);
 
 	_BIS_SR(GIE);
 
@@ -97,7 +42,6 @@ int main(void) {
 	{
 		updateTimer(&timer);
 		updateButtonState(&pushButton, &timer);
-		//updateLEDRing(&ring, &timer);
 		updateAccelerometer(&accelerometer);
 
 		//lightLEDAndNeighbors(&ring, 3, &timer);
@@ -139,3 +83,21 @@ int main(void) {
 
 	return 0;
 }
+
+//  ___         ___         ___        
+// |   |_______|   |_______|   |_______
+//  _______     _______     _______    
+// |       |___|       |___|       |___
+//  ___         ___         ___        
+// |   |_______|   |_______|   |_______
+//
+// ____________________________________
+// 
+// |---10 ms---|
+#pragma vector = TIMER0_A0_VECTOR // Timer A interrupt service routine
+__interrupt void TimerA0_routine(void)
+{
+	g100uSTimeout++;
+	updateLEDRing(&ring);
+}
+

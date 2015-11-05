@@ -14,49 +14,74 @@ void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber, TimerDefinitio
 		higherNeighbor = 0;
 	}
 
-	ring->leds[lowerNeighbor].eventTime = timer->microseconds;
-	ring->leds[lowerNeighbor].onTime = 500;
-	ring->leds[ledNumber].eventTime = timer->microseconds;
-	ring->leds[ledNumber].onTime = 1000;
-	ring->leds[higherNeighbor].eventTime = timer->microseconds;
-	ring->leds[higherNeighbor].onTime = 500;
+	ring->leds[lowerNeighbor].onTimeRemaining = 500;
+	ring->leds[ledNumber].onTimeRemaining = 1000;
+	ring->leds[higherNeighbor].onTimeRemaining = 500;
 }
 
-void updateLEDRing(LEDRingDefinition *ring, TimerDefinition *timer)
+void updateLEDRing(LEDRingDefinition *ring)
 {
-	// use ring->animation and timer to light the right LEDs
-
 	// for each LEDLightDefinition in the ring, use the timer to determine whether it should be lit or dark
-	unsigned char mask;
+	if (ring->dutyIndex >= 100)
+	{
+		ring->dutyIndex = 0;
+		reloadPWMTimes(ring);
+		P1OUT ^= BIT6;
+	}
+
+	ring->mask = 0x00;
+
+	// send a mask based on the LEDs that still have high time remaining
 	int i;
 	for (i = 0; i < 8; i++)
 	{
-		if (timer->microseconds - ring->leds[i].eventTime > ring->leds[i].onTime)
+		if (ring->dutyCycleRemaining[i])
 		{
-			// turn it off
-		}
-		else
-		{
-			// turn it off
-			mask += 1 << i;
+			ring->mask |= (0x01 << i);
+			ring->dutyCycleRemaining[i]--;
 		}
 	}
 
-	lightLEDs(mask);
+	sendLEDMask(ring->mask);
+
+	ring->dutyIndex++;
 }
 
-void lightLEDs(unsigned char mask){
+void sendLEDMask(unsigned char mask){
 	send(mask);
 	enableLatch();
 	disableLatch();
 }
 
-void initializeLEDRing(LEDRingDefinition *ring){
+void reloadPWMTimes(LEDRingDefinition *ring)
+{
+	int i;
+	for (i = 0; i < 8; i++)
+	{
+		ring->dutyCycleRemaining[i] = ring->dutyCycle[i];
+	}
+}
+
+void initializeLEDRing(LEDRingDefinition *ring)
+{
 	P1OUT &= ~( SCK | SI | BLANK);
 	P2OUT |= ( LATCH );
 
 	P1DIR |= ( SCK | SI | BLANK);
 	P2DIR |= ( LATCH );
+
+	ring->mask = 0x00;
+	ring->dutyIndex = 0;
+	
+	int i;
+	for (i = 0; i < 8; i++)
+	{
+		ring->dutyCycleRemaining[i] = 0;
+	}
+
+	ring->dutyCycle[5] = DUTY_CYCLE_DIM;
+	ring->dutyCycle[6] = DUTY_CYCLE_BRIGHTEST;
+	ring->dutyCycle[7] = DUTY_CYCLE_DIM;
 }
 
 void send(unsigned char s){
