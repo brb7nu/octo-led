@@ -2,7 +2,7 @@
 #define ACCELEROMETER_H
 
 #include <msp430.h>
-int n_x = 0;						// index for circular buffer
+extern int n_x;						// index for circular buffer
 
 typedef struct
 {
@@ -26,6 +26,6 @@ typedef struct
 void initializeAccelerometer(AccelerometerDefinition *accelerometer);
 void calibrateAccelerometer(AccelerometerDefinition *accelerometer);
 void updateAccelerometer(AccelerometerDefinition *accelerometer);
-void filter(AccelerometerDefinition *accelerometer, unsigned int xVal, unsigned int yVal, unsigned int zVal);
+void filter(AccelerometerDefinition *accelerometer);
 
 #endif

@@ -1,5 +1,7 @@
 #include "accelerometer.h"
 
+int n_x = 0;						// index for circular buffer
+
 void initializeAccelerometer(AccelerometerDefinition *accelerometer) {
 	P1OUT &= ~(BIT0 + BIT1 + BIT2);
 	P1DIR &= ~(BIT0 + BIT1 + BIT2);
@@ -35,18 +37,18 @@ void updateAccelerometer(AccelerometerDefinition *accelerometer) {
 		accelerometer->xVal = measurements[0];	// get fresh x, y, z vals
 		accelerometer->yVal = measurements[1];
 		accelerometer->zVal = measurements[2];
-		filer(&accelerometer, accelerometer->xVal, accelerometer->yVal, accelerometer->zVal);	// send those to the circular buffer
+		filter(accelerometer);	// send those to the circular buffer
 }
 
-void filter(AccelerometerDefinition *accelerometer, unsigned int xVal,unsigned int yVal, unsigned int zVal){
+void filter(AccelerometerDefinition *accelerometer){
 	volatile unsigned int buffer[3][8];
 	accelerometer->xSum -= buffer[0][n_x];			// subtract old value from sums
 	accelerometer->ySum -= buffer[1][n_x];
 	accelerometer->zSum - buffer[2][n_x];
 
-	buffer[0][n_x] = xVal;							// update current index with new values from the passed values
-	buffer[1][n_x] = yVal;
-	buffer[2][n_x] = zVal;
+	buffer[0][n_x] = accelerometer->xVal;							// update current index with new values from the passed values
+	buffer[1][n_x] = accelerometer->yVal;
+	buffer[2][n_x] = accelerometer->zVal;
 
 	accelerometer->xSum += buffer[0][n_x];			// add new values to the sum
 	accelerometer->ySum += buffer[1][n_x];
