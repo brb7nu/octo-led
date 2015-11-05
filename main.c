@@ -101,9 +101,9 @@ int main(void)
 		ledRingHighTimeRemaining[i] = 0;
 	}
 
-	ledRingHighTimeMS[5] = DUTY_CYCLE_DIMMEST;
+	ledRingHighTimeMS[5] = DUTY_CYCLE_DIM;
 	ledRingHighTimeMS[6] = DUTY_CYCLE_BRIGHTEST;
-	ledRingHighTimeMS[7] = DUTY_CYCLE_DIMMEST;
+	ledRingHighTimeMS[7] = DUTY_CYCLE_DIM;
 
 	_BIS_SR(GIE);
 
