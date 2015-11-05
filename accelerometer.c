@@ -1,8 +1,17 @@
 #include "accelerometer.h"
 
 int n_x = 0;						// index for circular buffer
+volatile unsigned int buffer[3][8];
 
 void initializeAccelerometer(AccelerometerDefinition *accelerometer) {
+	accelerometer->xSum = 0;
+	accelerometer->ySum = 0;
+	accelerometer->zSum = 0;
+
+	accelerometer->xAvg = 0;
+	accelerometer->yAvg = 0;
+	accelerometer->zAvg = 0;
+
 	P1OUT &= ~(BIT0 + BIT1 + BIT2);
 	P1DIR &= ~(BIT0 + BIT1 + BIT2);
 
@@ -41,10 +50,9 @@ void updateAccelerometer(AccelerometerDefinition *accelerometer) {
 }
 
 void filter(AccelerometerDefinition *accelerometer){
-	volatile unsigned int buffer[3][8];
 	accelerometer->xSum -= buffer[0][n_x];			// subtract old value from sums
 	accelerometer->ySum -= buffer[1][n_x];
-	accelerometer->zSum - buffer[2][n_x];
+	accelerometer->zSum -= buffer[2][n_x];
 
 	buffer[0][n_x] = accelerometer->xVal;							// update current index with new values from the passed values
 	buffer[1][n_x] = accelerometer->yVal;
@@ -58,6 +66,8 @@ void filter(AccelerometerDefinition *accelerometer){
 	accelerometer->yAvg = accelerometer->ySum >> 3;
 	accelerometer->zAvg = accelerometer->zSum >> 3;
 	// now the update ADC averages are available within the average fields within the accelerometer struct
+	n_x++;
+	if (n_x == 8) n_x = 0;
 }
 
 // ADC10 interrupt service routine
