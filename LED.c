@@ -1,22 +1,39 @@
 #include "LED.h"
 
-void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber, TimerDefinition *timer)
+// void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber, TimerDefinition *timer)
+// {
+// 	int lowerNeighbor = ledNumber - 1;
+// 	int higherNeighbor = ledNumber + 1;
+
+// 	if (ledNumber == 0)
+// 	{
+// 		lowerNeighbor = 7;
+// 	}
+// 	else if (ledNumber == 7)
+// 	{
+// 		higherNeighbor = 0;
+// 	}
+
+// 	ring->leds[lowerNeighbor].onTimeRemaining = 500;
+// 	ring->leds[ledNumber].onTimeRemaining = 1000;
+// 	ring->leds[higherNeighbor].onTimeRemaining = 500;
+// }
+
+void lightOneLED(LEDRingDefinition *ring, char ledNumber)
 {
-	int lowerNeighbor = ledNumber - 1;
-	int higherNeighbor = ledNumber + 1;
-
-	if (ledNumber == 0)
+	int i;
+	for (i = 0; i < 8; i++)
 	{
-		lowerNeighbor = 7;
+		if (i == ledNumber)
+		{
+			ring->dutyCycle[i] = 100;
+		}
+		else
+		{
+			ring->dutyCycle[i] = 0;
+		}
 	}
-	else if (ledNumber == 7)
-	{
-		higherNeighbor = 0;
-	}
-
-	ring->leds[lowerNeighbor].onTimeRemaining = 500;
-	ring->leds[ledNumber].onTimeRemaining = 1000;
-	ring->leds[higherNeighbor].onTimeRemaining = 500;
+	_delay_cycles(1000000);
 }
 
 void updateLEDRing(LEDRingDefinition *ring)

@@ -25,13 +25,6 @@
 
 typedef struct
 {
-	int onTimeRemaining;
-	// TODO add pin and port
-} LEDLightDefinition;
-
-typedef struct
-{
-	LEDLightDefinition leds[8];
 	char mask;
 
 	// stores the number of milliseconds each led must stay on
@@ -46,7 +39,8 @@ typedef struct
 void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber, TimerDefinition *timer);
 void updateLEDRing(LEDRingDefinition *ring);
 void initializeLEDRing(LEDRingDefinition *ring);
-void lightLEDs(unsigned char mask);
+void lightOneLED(LEDRingDefinition *ring, char ledNumber);
+void reloadPWMTimes(LEDRingDefinition *ring);
 
 // private SPI communication functions
 void send(unsigned char s);
