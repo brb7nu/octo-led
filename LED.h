@@ -9,14 +9,14 @@
 #define LATCH BIT0
 #define SI BIT7
 
-#define N_LED 7
-#define NE_LED 6
-#define E_LED 5
-#define SE_LED 4
-#define S_LED 3
-#define SW_LED 2
-#define W_LED 1
-#define NW_LED 0
+#define N_LED BIT7
+#define NE_LED BIT6
+#define E_LED BIT5
+#define SE_LED BIT4
+#define S_LED BIT3
+#define SW_LED BIT2
+#define W_LED BIT1
+#define NW_LED BIT0
 
 #define DUTY_CYCLE_BRIGHTEST 100
 #define DUTY_CYCLE_BRIGHT 20
@@ -36,11 +36,13 @@ typedef struct
 	int dutyIndex;
 } LEDRingDefinition;
 
-void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber);
+void lightLEDAndNeighbors(LEDRingDefinition *ring, char mask);
 void updateLEDRing(LEDRingDefinition *ring);
 void initializeLEDRing(LEDRingDefinition *ring);
-void lightOneLED(LEDRingDefinition *ring, char ledNumber);
+void lightLEDMask(LEDRingDefinition *ring, char mask);
 void reloadPWMTimes(LEDRingDefinition *ring);
+void clearDutyCycles(LEDRingDefinition *ring);
+inline void sendLEDMask(unsigned char mask);
 
 // private SPI communication functions
 void send(unsigned char s);

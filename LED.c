@@ -1,7 +1,14 @@
 #include "LED.h"
 
-void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber)
+void lightLEDAndNeighbors(LEDRingDefinition *ring, char mask)
 {
+	int ledNumber;
+	while (mask)
+	{
+		mask >>= 1;
+		ledNumber += 1;	
+	}
+
 	int lowerNeighbor = ledNumber - 1;
 	int higherNeighbor = ledNumber + 1;
 
@@ -30,10 +37,20 @@ void clearDutyCycles(LEDRingDefinition *ring)
 	}
 }
 
-void lightOneLED(LEDRingDefinition *ring, char ledNumber)
+void lightLEDMask(LEDRingDefinition *ring, char mask)
 {
-	clearDutyCycles(ring);
-	ring->dutyCycle[ledNumber] = 100;
+	int i;
+	for (i = 0; i < 8; i++)
+	{
+		if (mask >> i && 0x1) // from LSB to MSB
+		{
+			ring->dutyCycle[i] = 100;
+		}
+		else
+		{
+			ring->dutyCycle[i] = 0;
+		}
+	}
 	_delay_cycles(1000000);
 }
 
@@ -90,16 +107,14 @@ void initializeLEDRing(LEDRingDefinition *ring)
 
 	ring->mask = 0x00;
 	ring->dutyIndex = 0;
+
+	clearDutyCycles(ring);
 	
 	int i;
 	for (i = 0; i < 8; i++)
 	{
 		ring->dutyCycleRemaining[i] = 0;
 	}
-
-	ring->dutyCycle[5] = DUTY_CYCLE_DIM;
-	ring->dutyCycle[6] = DUTY_CYCLE_BRIGHTEST;
-	ring->dutyCycle[7] = DUTY_CYCLE_DIM;
 }
 
 void send(unsigned char s){

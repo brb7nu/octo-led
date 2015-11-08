@@ -46,6 +46,7 @@ int main(void)
 
 	_BIS_SR(GIE);
 
+	/*
 	////BEGIN INITIALIZATION/////
 	// xMax
 	while(1){
@@ -89,6 +90,7 @@ int main(void)
 			break;
 		}
 	}
+	*/
 
 	while (1)
 	{
@@ -97,10 +99,44 @@ int main(void)
 		updateButtonState(&pushButton, &timer);
 		updateAccelerometer(&accelerometer);
 
-		coord.x = -5;//accelerometer.xAvg;
-		coord.y = 5;//accelerometer.yAvg;
-		coord.z = -5;//accelerometer.zAvg;
+		coord.x = accelerometer.xAvg;
+		coord.y = accelerometer.yAvg;
+		coord.z = accelerometer.zAvg;
 		meas = getDisplaySetting(&coord);
+
+		// cutoff angles are 1/16th offset from 3600 / 8
+		if (2250 <= meas.angle && meas.angle < 6750)
+		{
+			lightLEDAndNeighbors(&ring, BIT1);
+		}
+		else if (6750 <= meas.angle && meas.angle < 11250)
+		{
+			lightLEDAndNeighbors(&ring, BIT2);
+		}
+		else if (11250 <= meas.angle && meas.angle < 15750)
+		{
+			lightLEDAndNeighbors(&ring, BIT3);
+		}
+		else if (15750 <= meas.angle && meas.angle < 20250)
+		{
+			lightLEDAndNeighbors(&ring, BIT4);
+		}
+		else if (20250 <= meas.angle && meas.angle < 24750)
+		{
+			lightLEDAndNeighbors(&ring, BIT5);
+		}
+		else if (24750 <= meas.angle && meas.angle < 29250)
+		{
+			lightLEDAndNeighbors(&ring, BIT6);
+		}
+		else if (29250 <= meas.angle && meas.angle < 33750)
+		{
+			lightLEDAndNeighbors(&ring, BIT7);
+		}
+		else
+		{
+			lightLEDAndNeighbors(&ring, BIT0);
+		}
 
 		//lightLEDAndNeighbors(&ring, 3, &timer);
 
