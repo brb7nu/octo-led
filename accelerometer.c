@@ -23,6 +23,10 @@ void initializeAccelerometer(AccelerometerDefinition *accelerometer) {
 	ADC10CTL0 = ADC10SHT_2 + MSC + ADC10ON + ADC10IE;
 	ADC10AE0 = (BIT0 + BIT1 + BIT2);          // P1.0,1, 2 Analog enable
 	ADC10DTC1 = 3;                         // number of conversions
+
+	int i;
+	for (i = 0; i < 8; i++)
+		updateAccelerometer(accelerometer);
 }
 
 void calibrateAccelerometer(AccelerometerDefinition *accelerometer) {
