@@ -48,8 +48,8 @@ int main(void)
 
 	////BEGIN INITIALIZATION/////
 	// xMax
+	lightLEDMask(&ring, N_LED);
 	while(1){
-		lightLEDMask(&ring, N_LED);
 		updateTimer(&timer);
 		ButtonState previous = pushButton.state;
 		updateButtonState(&pushButton, &timer);
@@ -60,8 +60,8 @@ int main(void)
 		}
 	}
 	// xMin
+	lightLEDMask(&ring, S_LED);
 	while(1){
-		lightLEDMask(&ring, S_LED);
 		updateTimer(&timer);
 		ButtonState previous = pushButton.state;
 		updateButtonState(&pushButton, &timer);
@@ -72,8 +72,8 @@ int main(void)
 		}
 	}
 	// yMax
+	lightLEDMask(&ring, W_LED);
 	while(1){
-		lightLEDMask(&ring, W_LED);
 		updateTimer(&timer);
 		ButtonState previous = pushButton.state;
 		updateButtonState(&pushButton, &timer);
@@ -84,8 +84,8 @@ int main(void)
 		}
 	}
 	// yMin
+	lightLEDMask(&ring, E_LED);
 	while(1){
-		lightLEDMask(&ring, E_LED);
 		updateTimer(&timer);
 		ButtonState previous = pushButton.state;
 		updateButtonState(&pushButton, &timer);
@@ -96,8 +96,8 @@ int main(void)
 		}
 	}
 	// zMax
+	lightLEDMask(&ring, N_LED + SE_LED + SW_LED);
 	while(1){
-		lightLEDMask(&ring, N_LED + SE_LED + SW_LED);
 		updateTimer(&timer);
 		ButtonState previous = pushButton.state;
 		updateButtonState(&pushButton, &timer);
@@ -108,8 +108,8 @@ int main(void)
 		}
 	}
 	// zMin
+	lightLEDMask(&ring, S_LED + NW_LED + NE_LED);
 	while(1){
-		lightLEDMask(&ring, S_LED + NW_LED + NE_LED);
 		updateTimer(&timer);
 		ButtonState previous = pushButton.state;
 		updateButtonState(&pushButton, &timer);

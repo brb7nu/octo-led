@@ -42,7 +42,7 @@ void lightLEDMask(LEDRingDefinition *ring, char mask)
 	int i;
 	for (i = 0; i < 8; i++)
 	{
-		if ((mask >> i) && 0x1) // from LSB to MSB
+		if ((mask >> i) & 0x1) // from LSB to MSB
 		{
 			ring->dutyCycle[i] = 100;
 		}
