@@ -7,6 +7,7 @@
 #include "timer.h"
 #include "led.h"
 #include "accelerometer.h"
+#include "cordic.h"
 
 // #define LEFT_RED_TP XOUT // P1.0
 // #define LEFT_WHITE_TP YOUT // P1.1
@@ -24,6 +25,12 @@ TimerDefinition timer;
 LEDRingDefinition ring;
 ButtonDefinition pushButton;
 AccelerometerDefinition accelerometer;
+calculations calcs;
+
+long phi;
+long theta;
+long XYhypot;
+long Zhypot;
 
 // NO need for LED mask because it just holds the non-zero values in ledRingHighTimeRemaining
 
@@ -43,6 +50,18 @@ int main(void)
 		updateTimer(&timer);
 		updateButtonState(&pushButton, &timer);
 		updateAccelerometer(&accelerometer);
+		calcs.x = 5 * MUL; //accelerometer.xAvg;
+		calcs.y = 10 * MUL; //accelerometer.yAvg;
+		Cordic(&calcs, ATAN_HYP);
+		phi = calcs.angle;
+		XYhypot = calcs.x;
+
+		calcs.y = accelerometer.zAvg;
+		calcs.x = XYhypot;
+		Cordic(&calcs, ATAN_HYP);
+		theta = calcs.angle;
+		Zhypot = calcs.x;
+
 
 		//lightLEDAndNeighbors(&ring, 3, &timer);
 
