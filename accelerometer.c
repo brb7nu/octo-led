@@ -40,8 +40,6 @@ void updateAccelerometer(AccelerometerDefinition *accelerometer) {
 	ADC10SA = (int) measurements;        // Data buffer start
 	ADC10CTL0 |= ENC + ADC10SC;             // Sampling and conversion ready
 	__bis_SR_register(CPUOFF + GIE);        // LPM0, ADC10_ISR will force exit
-	_NOP();                                 // space for debugger
-	_NOP();                                // Set Breakpoint here to read ADC
 	// ADCMEM?
 
 	// TODO change to averaging code
