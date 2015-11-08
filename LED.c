@@ -2,7 +2,7 @@
 
 void lightLEDAndNeighbors(LEDRingDefinition *ring, char mask)
 {
-	int ledNumber;
+	int ledNumber = 0;
 	while (mask)
 	{
 		mask >>= 1;
@@ -42,7 +42,7 @@ void lightLEDMask(LEDRingDefinition *ring, char mask)
 	int i;
 	for (i = 0; i < 8; i++)
 	{
-		if (mask >> i && 0x1) // from LSB to MSB
+		if ((mask >> i) && 0x1) // from LSB to MSB
 		{
 			ring->dutyCycle[i] = 100;
 		}
@@ -51,7 +51,6 @@ void lightLEDMask(LEDRingDefinition *ring, char mask)
 			ring->dutyCycle[i] = 0;
 		}
 	}
-	//_delay_cycles(1000000);
 }
 
 void updateLEDRing(LEDRingDefinition *ring)

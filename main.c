@@ -46,79 +46,79 @@ int main(void)
 
 	_BIS_SR(GIE);
 
-	/*
 	////BEGIN INITIALIZATION/////
 	// xMax
 	while(1){
-		lightOneLED(&ring, N_LED);
+		lightLEDMask(&ring, N_LED);
 		updateTimer(&timer);
 		ButtonState previous = pushButton.state;
 		updateButtonState(&pushButton, &timer);
 		if (previous == unpressed && pushButton.state == pressed){
+			updateAccelerometer(&accelerometer);
 			accelerometer.xMax = accelerometer.xAvg;
 			break;
 		}
 	}
 	// xMin
 	while(1){
-		lightOneLED(&ring, S_LED);
+		lightLEDMask(&ring, S_LED);
 		updateTimer(&timer);
 		ButtonState previous = pushButton.state;
 		updateButtonState(&pushButton, &timer);
 		if (previous == unpressed && pushButton.state == pressed){
+			updateAccelerometer(&accelerometer);
 			accelerometer.xMin = accelerometer.xAvg;
 			break;
 		}
 	}
 	// yMax
 	while(1){
-		lightOneLED(&ring, W_LED);
+		lightLEDMask(&ring, W_LED);
 		updateTimer(&timer);
 		ButtonState previous = pushButton.state;
 		updateButtonState(&pushButton, &timer);
 		if (previous == unpressed && pushButton.state == pressed){
+			updateAccelerometer(&accelerometer);
 			accelerometer.yMax = accelerometer.yAvg;
 			break;
 		}
 	}
 	// yMin
 	while(1){
-		lightOneLED(&ring, E_LED);
+		lightLEDMask(&ring, E_LED);
 		updateTimer(&timer);
 		ButtonState previous = pushButton.state;
 		updateButtonState(&pushButton, &timer);
 		if (previous == unpressed && pushButton.state == pressed){
+			updateAccelerometer(&accelerometer);
 			accelerometer.yMin = accelerometer.yAvg;
 			break;
 		}
 	}
 	// zMax
 	while(1){
-		lightOneLED(&ring, N_LED);
-		lightOneLED(&ring, SE_LED);
-		lightOneLED(&ring, SW_LED);
+		lightLEDMask(&ring, N_LED + SE_LED + SW_LED);
 		updateTimer(&timer);
 		ButtonState previous = pushButton.state;
 		updateButtonState(&pushButton, &timer);
 		if (previous == unpressed && pushButton.state == pressed){
+			updateAccelerometer(&accelerometer);
 			accelerometer.zMax = accelerometer.zAvg;
 			break;
 		}
 	}
 	// zMin
 	while(1){
-		lightOneLED(&ring, S_LED);
-		lightOneLED(&ring, NW_LED);
-		lightOneLED(&ring, NE_LED);
+		lightLEDMask(&ring, S_LED + NW_LED + NE_LED);
 		updateTimer(&timer);
 		ButtonState previous = pushButton.state;
 		updateButtonState(&pushButton, &timer);
 		if (previous == unpressed && pushButton.state == pressed){
+			updateAccelerometer(&accelerometer);
 			accelerometer.zMax = accelerometer.zAvg;
 			break;
 		}
 	}
-	*/
 
 	while (1)
 	{
