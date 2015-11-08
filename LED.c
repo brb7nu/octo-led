@@ -1,38 +1,39 @@
 #include "LED.h"
 
-// void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber, TimerDefinition *timer)
-// {
-// 	int lowerNeighbor = ledNumber - 1;
-// 	int higherNeighbor = ledNumber + 1;
+void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber)
+{
+	int lowerNeighbor = ledNumber - 1;
+	int higherNeighbor = ledNumber + 1;
 
-// 	if (ledNumber == 0)
-// 	{
-// 		lowerNeighbor = 7;
-// 	}
-// 	else if (ledNumber == 7)
-// 	{
-// 		higherNeighbor = 0;
-// 	}
+	if (ledNumber == 0)
+	{
+		lowerNeighbor = 7;
+	}
+	else if (ledNumber == 7)
+	{
+		higherNeighbor = 0;
+	}
 
-// 	ring->leds[lowerNeighbor].onTimeRemaining = 500;
-// 	ring->leds[ledNumber].onTimeRemaining = 1000;
-// 	ring->leds[higherNeighbor].onTimeRemaining = 500;
-// }
+	clearDutyCycles(ring);
 
-void lightOneLED(LEDRingDefinition *ring, char ledNumber)
+	ring->dutyCycle[lowerNeighbor] = DUTY_CYCLE_DIM;
+	ring->dutyCycle[ledNumber] = DUTY_CYCLE_BRIGHTEST;
+	ring->dutyCycle[higherNeighbor] = DUTY_CYCLE_DIM;
+}
+
+void clearDutyCycles(LEDRingDefinition *ring)
 {
 	int i;
 	for (i = 0; i < 8; i++)
 	{
-		if (i == ledNumber)
-		{
-			ring->dutyCycle[i] = 100;
-		}
-		else
-		{
-			ring->dutyCycle[i] = 0;
-		}
+		ring->dutyCycle[i] = 0;
 	}
+}
+
+void lightOneLED(LEDRingDefinition *ring, char ledNumber)
+{
+	clearDutyCycles(ring);
+	ring->dutyCycle[ledNumber] = 100;
 	_delay_cycles(1000000);
 }
 
@@ -64,7 +65,7 @@ void updateLEDRing(LEDRingDefinition *ring)
 	ring->dutyIndex++;
 }
 
-void sendLEDMask(unsigned char mask){
+inline void sendLEDMask(unsigned char mask){
 	send(mask);
 	enableLatch();
 	disableLatch();
@@ -116,23 +117,23 @@ void send(unsigned char s){
     }
 }
 
-void enableLatch(){
+inline void enableLatch(){
 	P2OUT |= LATCH;
 }
 
-void disableLatch(){
+inline void disableLatch(){
 	P2OUT &= ~LATCH;
 }
 
-void enableBlank(){
+inline void enableBlank(){
 	P1OUT |= BLANK;
 }
 
-void disableBlank(){
+inline void disableBlank(){
 	P1OUT &= ~BLANK;
 }
 
-void pulseClock(){
+inline void pulseClock(){
 	 P1OUT |= SCK;
 	 P1OUT &= ~SCK;
 }

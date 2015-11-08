@@ -36,7 +36,7 @@ typedef struct
 	int dutyIndex;
 } LEDRingDefinition;
 
-void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber, TimerDefinition *timer);
+void lightLEDAndNeighbors(LEDRingDefinition *ring, int ledNumber);
 void updateLEDRing(LEDRingDefinition *ring);
 void initializeLEDRing(LEDRingDefinition *ring);
 void lightOneLED(LEDRingDefinition *ring, char ledNumber);
@@ -44,10 +44,10 @@ void reloadPWMTimes(LEDRingDefinition *ring);
 
 // private SPI communication functions
 void send(unsigned char s);
-void enableLatch();                         // Allows operations to be carried out on LED Driver
-void disableLatch();                        // Prevents operations from being carried out on LED Driver
-void enableBlank();                         //
-void disableBlank();                        //
-void pulseClock();                          // Causes a clock tick to be sent to LED Driver
+inline void enableLatch();                         // Allows operations to be carried out on LED Driver
+inline void disableLatch();                        // Prevents operations from being carried out on LED Driver
+inline void enableBlank();                         //
+inline void disableBlank();                        //
+inline void pulseClock();                          // Causes a clock tick to be sent to LED Driver
 
 #endif /* LED_H_ */
