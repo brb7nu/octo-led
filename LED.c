@@ -51,7 +51,7 @@ void lightLEDMask(LEDRingDefinition *ring, char mask)
 			ring->dutyCycle[i] = 0;
 		}
 	}
-	_delay_cycles(1000000);
+	//_delay_cycles(1000000);
 }
 
 void updateLEDRing(LEDRingDefinition *ring)

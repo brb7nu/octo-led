@@ -7,6 +7,9 @@ extern volatile unsigned int buffer[3][8];
 
 typedef struct
 {
+	int xOffset;
+	int yOffset;
+	int zOffset;
 	int xMax;
 	int xMin;
 	int yMax;
