@@ -33,7 +33,7 @@ void lightOneLED(LEDRingDefinition *ring, char ledNumber)
 			ring->dutyCycle[i] = 0;
 		}
 	}
-	_delay_cycles(1000000);
+	//_delay_cycles(1000000);
 }
 
 void updateLEDRing(LEDRingDefinition *ring)

@@ -49,42 +49,70 @@ int main(void)
 	////BEGIN INITIALIZATION/////
 	// xMax
 	while(1){
-		if (debounce(&pushButton.buttonSignal, &timer) == high){
+		lightOneLED(&ring, N_LED);
+		updateTimer(&timer);
+		ButtonState previous = pushButton.state;
+		updateButtonState(&pushButton, &timer);
+		if (previous == unpressed && pushButton.state == pressed){
 			accelerometer.xMax = accelerometer.xAvg;
 			break;
 		}
 	}
 	// xMin
 	while(1){
-		if (debounce(&pushButton.buttonSignal, &timer) == high){
+		lightOneLED(&ring, S_LED);
+		updateTimer(&timer);
+		ButtonState previous = pushButton.state;
+		updateButtonState(&pushButton, &timer);
+		if (previous == unpressed && pushButton.state == pressed){
 			accelerometer.xMin = accelerometer.xAvg;
 			break;
 		}
 	}
 	// yMax
 	while(1){
-		if (debounce(&pushButton.buttonSignal, &timer) == high){
+		lightOneLED(&ring, W_LED);
+		updateTimer(&timer);
+		ButtonState previous = pushButton.state;
+		updateButtonState(&pushButton, &timer);
+		if (previous == unpressed && pushButton.state == pressed){
 			accelerometer.yMax = accelerometer.yAvg;
 			break;
 		}
 	}
 	// yMin
 	while(1){
-		if (debounce(&pushButton.buttonSignal, &timer) == high){
+		lightOneLED(&ring, E_LED);
+		updateTimer(&timer);
+		ButtonState previous = pushButton.state;
+		updateButtonState(&pushButton, &timer);
+		if (previous == unpressed && pushButton.state == pressed){
 			accelerometer.yMin = accelerometer.yAvg;
 			break;
 		}
 	}
 	// zMax
 	while(1){
-		if (debounce(&pushButton.buttonSignal, &timer) == high){
+		lightOneLED(&ring, N_LED);
+		lightOneLED(&ring, SE_LED);
+		lightOneLED(&ring, SW_LED);
+		updateTimer(&timer);
+		ButtonState previous = pushButton.state;
+		updateButtonState(&pushButton, &timer);
+		if (previous == unpressed && pushButton.state == pressed){
 			accelerometer.zMax = accelerometer.zAvg;
 			break;
 		}
 	}
 	// zMin
 	while(1){
-		if (debounce(&pushButton.buttonSignal, &timer) == high){
+		lightOneLED(&ring, S_LED);
+		lightOneLED(&ring, NW_LED);
+		lightOneLED(&ring, NE_LED);
+		updateTimer(&timer);
+		ButtonState previous = pushButton.state;
+		updateButtonState(&pushButton, &timer);
+		if (previous == unpressed && pushButton.state == pressed){
 			accelerometer.zMax = accelerometer.zAvg;
 			break;
 		}
@@ -92,14 +120,13 @@ int main(void)
 
 	while (1)
 	{
-
 		updateTimer(&timer);
 		updateButtonState(&pushButton, &timer);
 		updateAccelerometer(&accelerometer);
 
-		coord.x = -5;//accelerometer.xAvg;
-		coord.y = 5;//accelerometer.yAvg;
-		coord.z = -5;//accelerometer.zAvg;
+		coord.x = accelerometer.xOffset;
+		coord.y = accelerometer.yOffset;
+		coord.z = accelerometer.zOffset;
 		meas = getDisplaySetting(&coord);
 
 		//lightLEDAndNeighbors(&ring, 3, &timer);
@@ -138,6 +165,7 @@ int main(void)
 		// 		break;
 		// }
 	}
+
 
 	return 0;
 }

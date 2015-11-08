@@ -65,8 +65,13 @@ void filter(AccelerometerDefinition *accelerometer){
 	accelerometer->zSum += buffer[2][n_x];
 
 	accelerometer->xAvg = accelerometer->xSum >> 3;	// bit shift by 3 to divide the x sum by 8 and update the struct average
+	accelerometer->xOffset = 100 * (accelerometer->xAvg - accelerometer->xMin) / (accelerometer->xMax - accelerometer->xMin);	// generate scaled x value
+
 	accelerometer->yAvg = accelerometer->ySum >> 3;
+	accelerometer->yOffset = 100 * (accelerometer->yAvg - accelerometer->yMin) / (accelerometer->yMax - accelerometer->yMin);	// generate scaled x value
+
 	accelerometer->zAvg = accelerometer->zSum >> 3;
+	accelerometer->zOffset = 100 * (accelerometer->zAvg - accelerometer->zMin) / (accelerometer->zMax - accelerometer->zMin);	// generate scaled x value
 	// now the update ADC averages are available within the average fields within the accelerometer struct
 	n_x++;
 	if (n_x == 8) n_x = 0;
