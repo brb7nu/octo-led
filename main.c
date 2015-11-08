@@ -25,7 +25,8 @@ TimerDefinition timer;
 LEDRingDefinition ring;
 ButtonDefinition pushButton;
 AccelerometerDefinition accelerometer;
-calculations calcs;
+coordinates coord;
+measurements meas;
 
 long phi;
 long theta;
@@ -50,18 +51,11 @@ int main(void)
 		updateTimer(&timer);
 		updateButtonState(&pushButton, &timer);
 		updateAccelerometer(&accelerometer);
-		calcs.x = 5 * MUL; //accelerometer.xAvg;
-		calcs.y = 10 * MUL; //accelerometer.yAvg;
-		Cordic(&calcs, ATAN_HYP);
-		phi = calcs.angle;
-		XYhypot = calcs.x;
 
-		calcs.y = accelerometer.zAvg;
-		calcs.x = XYhypot;
-		Cordic(&calcs, ATAN_HYP);
-		theta = calcs.angle;
-		Zhypot = calcs.x;
-
+		coord.x = -5;//accelerometer.xAvg;
+		coord.y = 5;//accelerometer.yAvg;
+		coord.z = -5;//accelerometer.zAvg;
+		meas = getDisplaySetting(&coord);
 
 		//lightLEDAndNeighbors(&ring, 3, &timer);
 
