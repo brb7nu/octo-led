@@ -46,8 +46,53 @@ int main(void)
 
 	_BIS_SR(GIE);
 
+	////BEGIN INITIALIZATION/////
+	// xMax
+	while(1){
+		if (debounce(&pushButton.buttonSignal, &timer) == high){
+			accelerometer.xMax = accelerometer.xAvg;
+			break;
+		}
+	}
+	// xMin
+	while(1){
+		if (debounce(&pushButton.buttonSignal, &timer) == high){
+			accelerometer.xMin = accelerometer.xAvg;
+			break;
+		}
+	}
+	// yMax
+	while(1){
+		if (debounce(&pushButton.buttonSignal, &timer) == high){
+			accelerometer.yMax = accelerometer.yAvg;
+			break;
+		}
+	}
+	// yMin
+	while(1){
+		if (debounce(&pushButton.buttonSignal, &timer) == high){
+			accelerometer.yMin = accelerometer.yAvg;
+			break;
+		}
+	}
+	// zMax
+	while(1){
+		if (debounce(&pushButton.buttonSignal, &timer) == high){
+			accelerometer.zMax = accelerometer.zAvg;
+			break;
+		}
+	}
+	// zMin
+	while(1){
+		if (debounce(&pushButton.buttonSignal, &timer) == high){
+			accelerometer.zMax = accelerometer.zAvg;
+			break;
+		}
+	}
+
 	while (1)
 	{
+
 		updateTimer(&timer);
 		updateButtonState(&pushButton, &timer);
 		updateAccelerometer(&accelerometer);
