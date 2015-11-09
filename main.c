@@ -172,7 +172,7 @@ int main(void)
 #pragma vector = TIMER0_A0_VECTOR // Timer A interrupt service routine
 __interrupt void TimerA0_routine(void)
 {
-	g100uSTimeout++;
+	timeout++;
 	updateLEDRing(&ring);
 }
 
