@@ -69,16 +69,19 @@ void filter(AccelerometerDefinition *accelerometer){
 	accelerometer->zSum += buffer[2][n_x];
 
 	accelerometer->xAvg = accelerometer->xSum >> 3;	// bit shift by 3 to divide the x sum by 8 and update the struct average
-	accelerometer->xNormalized = ((accelerometer->xAvg - accelerometer->xMin) << 3) / (accelerometer->xMax - accelerometer->xMin);	// generate scaled x value
-
 	accelerometer->yAvg = accelerometer->ySum >> 3;
-	accelerometer->yNormalized = ((accelerometer->yAvg - accelerometer->yMin) << 3) / (accelerometer->yMax - accelerometer->yMin);	// generate scaled x value
-
 	accelerometer->zAvg = accelerometer->zSum >> 3;
-	accelerometer->zNormalized = ((accelerometer->zAvg - accelerometer->zMin) << 3) / (accelerometer->zMax - accelerometer->zMin);	// generate scaled x value
 	// now the update ADC averages are available within the average fields within the accelerometer struct
 	n_x++;
 	if (n_x == 8) n_x = 0;
+}
+void normalize(AccelerometerDefinition *accelerometer){
+
+	accelerometer->xNormalized = (accelerometer->xAvg - accelerometer->xMin) << 3 / (accelerometer->xMax - accelerometer->xMin);	// generate scaled x value
+
+	accelerometer->yNormalized = (accelerometer->yAvg - accelerometer->yMin) << 3 / (accelerometer->yMax - accelerometer->yMin);	// generate scaled x value
+
+	accelerometer->zNormalized = (accelerometer->zAvg - accelerometer->zMin) << 3 / (accelerometer->zMax - accelerometer->zMin);	// generate scaled x value
 }
 
 // ADC10 interrupt service routine
