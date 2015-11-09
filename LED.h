@@ -27,17 +27,13 @@ typedef struct
 {
 	char mask;
 
-	// stores the number of milliseconds each led must stay on
-	unsigned int dutyCycleRemaining[8];
-
-	// stores the high times in milliseconds for each LED in the ring
-	// this is different than ledRingHighTimeRemaining because it does not get decremented
-	unsigned int dutyCycle[8];
-	unsigned int dutyIndex;
+	// when cycleIndex == offTick[i], turn that LED off
+	unsigned int offTick[8]; // ranges from [0, 99]
+	unsigned int cycleIndex;
 } LEDRingDefinition;
 
-void lightLEDAndNeighbors(LEDRingDefinition *ring, char mask);
-void updateLEDRing(LEDRingDefinition *ring);
+void setLEDAndNeighbors(LEDRingDefinition *ring, char mask);
+void adjustPWM(LEDRingDefinition *ring);
 void initializeLEDRing(LEDRingDefinition *ring);
 void lightLEDMask(LEDRingDefinition *ring, char mask);
 inline void clearDutyCycles(LEDRingDefinition *ring);

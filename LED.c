@@ -1,13 +1,21 @@
 #include "LED.h"
 
-void lightLEDAndNeighbors(LEDRingDefinition *ring, char mask)
+void setLEDAndNeighbors(LEDRingDefinition *ring, char mask)
 {
+	// BIT3 == 0b00001000
+	// shoudl result in ledNumber 3
+
+	// 2
+	// mask = 0b00000100
+	//
+
 	unsigned int ledNumber = 0;
 	while (mask)
 	{
 		mask >>= 1;
 		ledNumber += 1;	
 	}
+	ledNumber--;
 
 	unsigned int lowerNeighbor = ledNumber - 1;
 	unsigned int higherNeighbor = ledNumber + 1;
@@ -23,9 +31,9 @@ void lightLEDAndNeighbors(LEDRingDefinition *ring, char mask)
 
 	clearDutyCycles(ring);
 
-	ring->dutyCycle[lowerNeighbor] = DUTY_CYCLE_DIM;
-	ring->dutyCycle[ledNumber] = DUTY_CYCLE_BRIGHTEST;
-	ring->dutyCycle[higherNeighbor] = DUTY_CYCLE_DIM;
+	ring->offTick[lowerNeighbor] = DUTY_CYCLE_DIM;
+	ring->offTick[ledNumber] = DUTY_CYCLE_BRIGHTEST;
+	ring->offTick[higherNeighbor] = DUTY_CYCLE_DIM;
 }
 
 inline void clearDutyCycles(LEDRingDefinition *ring)
@@ -34,7 +42,7 @@ inline void clearDutyCycles(LEDRingDefinition *ring)
 	while (i)
 	{
 		i--;
-		ring->dutyCycle[i] = 0;
+		ring->offTick[i] = 0;
 	}
 }
 
@@ -46,46 +54,37 @@ void lightLEDMask(LEDRingDefinition *ring, char mask)
 		i--;
 		if ((mask >> i) & 0x1) // from MSB to LSB
 		{
-			ring->dutyCycle[i] = 100;
+			ring->offTick[i] = 100;
 		}
 		else
 		{
-			ring->dutyCycle[i] = 0;
+			ring->offTick[i] = 0;
 		}
 	}
 }
 
-void updateLEDRing(LEDRingDefinition *ring)
+void adjustPWM(LEDRingDefinition *ring)
 {
-	if (ring->dutyIndex == 0)
+	// if index has reached the turn off tick for any LED
+	// in the ring, set it low
+	ring->cycleIndex++;
+	if (ring->cycleIndex == 100)
 	{
-		ring->dutyIndex = 100;
-		unsigned int i = 8;
-		while (i)
-		{
-			i--;
-			ring->dutyCycleRemaining[i] = ring->dutyCycle[i];
-		}		
+		ring->cycleIndex = 0;
+		ring->mask = 0xFF;
 		P1OUT ^= BIT6;
 	}
 
-	ring->mask = 0x00;
-
-	// send a mask based on the LEDs that still have high time remaining
-	unsigned int i = 8;
-	while (i)
+	int i;
+	for (i = 0; i < 8; i++)
 	{
-		i--;
-		if (ring->dutyCycleRemaining[i])
+		if (ring->cycleIndex == ring->offTick[i])
 		{
-			ring->mask |= (0x01 << i);
-			ring->dutyCycleRemaining[i]--;
+			ring->mask &= ~(0x01 << i);
 		}
 	}
 
 	sendLEDMask(ring->mask);
-
-	ring->dutyIndex--;
 }
 
 inline void sendLEDMask(unsigned char mask){
@@ -114,8 +113,8 @@ void initializeLEDRing(LEDRingDefinition *ring)
 	P1DIR |= ( SCK | SI | BLANK);
 	P2DIR |= ( LATCH );
 
-	ring->mask = 0x00;
-	ring->dutyIndex = 0;
+	ring->mask = 0xFF;
+	ring->cycleIndex = 0;
 
 	clearDutyCycles(ring);
 	
@@ -123,6 +122,6 @@ void initializeLEDRing(LEDRingDefinition *ring)
 	while (i)
 	{
 		i--;
-		ring->dutyCycleRemaining[i] = 0;
+		ring->offTick[i] = 0;
 	}
 }
