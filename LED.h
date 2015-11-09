@@ -28,12 +28,12 @@ typedef struct
 	char mask;
 
 	// stores the number of milliseconds each led must stay on
-	int dutyCycleRemaining[8];
+	unsigned int dutyCycleRemaining[8];
 
 	// stores the high times in milliseconds for each LED in the ring
 	// this is different than ledRingHighTimeRemaining because it does not get decremented
-	int dutyCycle[8];
-	int dutyIndex;
+	unsigned int dutyCycle[8];
+	unsigned int dutyIndex;
 } LEDRingDefinition;
 
 void lightLEDAndNeighbors(LEDRingDefinition *ring, char mask);

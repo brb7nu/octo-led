@@ -2,15 +2,15 @@
 
 void lightLEDAndNeighbors(LEDRingDefinition *ring, char mask)
 {
-	int ledNumber = 0;
+	unsigned int ledNumber = 0;
 	while (mask)
 	{
 		mask >>= 1;
 		ledNumber += 1;	
 	}
 
-	int lowerNeighbor = ledNumber - 1;
-	int higherNeighbor = ledNumber + 1;
+	unsigned int lowerNeighbor = ledNumber - 1;
+	unsigned int higherNeighbor = ledNumber + 1;
 
 	if (ledNumber == 0)
 	{
@@ -30,19 +30,21 @@ void lightLEDAndNeighbors(LEDRingDefinition *ring, char mask)
 
 void clearDutyCycles(LEDRingDefinition *ring)
 {
-	int i;
-	for (i = 0; i < 8; i++)
+	unsigned int i = 8;
+	while (i)
 	{
+		i--;
 		ring->dutyCycle[i] = 0;
 	}
 }
 
 void lightLEDMask(LEDRingDefinition *ring, char mask)
 {
-	int i;
-	for (i = 0; i < 8; i++)
+	unsigned int i = 8;
+	while (i)
 	{
-		if ((mask >> i) & 0x1) // from LSB to MSB
+		i--;
+		if ((mask >> i) & 0x1) // from MSB to LSB
 		{
 			ring->dutyCycle[i] = 100;
 		}
@@ -56,9 +58,9 @@ void lightLEDMask(LEDRingDefinition *ring, char mask)
 void updateLEDRing(LEDRingDefinition *ring)
 {
 	// for each LEDLightDefinition in the ring, use the timer to determine whether it should be lit or dark
-	if (ring->dutyIndex >= 100)
+	if (ring->dutyIndex == 0)
 	{
-		ring->dutyIndex = 0;
+		ring->dutyIndex = 100;
 		reloadPWMTimes(ring);
 		P1OUT ^= BIT6;
 	}
@@ -66,9 +68,10 @@ void updateLEDRing(LEDRingDefinition *ring)
 	ring->mask = 0x00;
 
 	// send a mask based on the LEDs that still have high time remaining
-	int i;
-	for (i = 0; i < 8; i++)
+	unsigned int i = 8;
+	while (i)
 	{
+		i--;
 		if (ring->dutyCycleRemaining[i])
 		{
 			ring->mask |= (0x01 << i);
@@ -78,7 +81,7 @@ void updateLEDRing(LEDRingDefinition *ring)
 
 	sendLEDMask(ring->mask);
 
-	ring->dutyIndex++;
+	ring->dutyIndex--;
 }
 
 inline void sendLEDMask(unsigned char mask){
@@ -89,9 +92,10 @@ inline void sendLEDMask(unsigned char mask){
 
 void reloadPWMTimes(LEDRingDefinition *ring)
 {
-	int i;
-	for (i = 0; i < 8; i++)
+	unsigned int i = 8;
+	while (i)
 	{
+		i--;
 		ring->dutyCycleRemaining[i] = ring->dutyCycle[i];
 	}
 }
@@ -109,9 +113,10 @@ void initializeLEDRing(LEDRingDefinition *ring)
 
 	clearDutyCycles(ring);
 	
-	int i;
-	for (i = 0; i < 8; i++)
+	unsigned int i = 8;
+	while (i)
 	{
+		i--;
 		ring->dutyCycleRemaining[i] = 0;
 	}
 }
