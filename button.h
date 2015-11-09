@@ -14,5 +14,6 @@ typedef struct
 } ButtonDefinition;
 
 void updateButtonState(ButtonDefinition *button, TimerDefinition *timer);
+void waitUntil(ButtonDefinition *button, ButtonState state, TimerDefinition *timer);
 
 #endif

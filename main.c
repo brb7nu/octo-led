@@ -48,97 +48,64 @@ int main(void)
 
 	_BIS_SR(GIE);
 
+	int i;
+
 	////BEGIN INITIALIZATION/////
 	// xMax
 	lightLEDMask(&ring, N_LED);
-	while(1){
-		updateTimer(&timer);
-		ButtonState previous = pushButton.state;
-		updateButtonState(&pushButton, &timer);
-		if (previous == unpressed && pushButton.state == pressed){
-			int i;
-			for (i = 0; i < 8; i++){
-				updateAccelerometer(&accelerometer);
-			}
-			accelerometer.xMax = accelerometer.xAvg;
-			break;
-		}
+	waitUntil(&pushButton, pressed);
+
+	// button is pressed, so calibrate xmax
+	for (i = 0; i < 8; i++){
+		updateAccelerometer(&accelerometer);
 	}
+	accelerometer.xMax = accelerometer.xAvg;
+	waitUntil(&pushButton, unpressed);
+
 	// xMin
 	lightLEDMask(&ring, S_LED);
-	while(1){
-		updateTimer(&timer);
-		ButtonState previous = pushButton.state;
-		updateButtonState(&pushButton, &timer);
-		if (previous == unpressed && pushButton.state == pressed){
-			int i;
-			for (i = 0; i < 8; i++){
-				updateAccelerometer(&accelerometer);
-			}
-			accelerometer.xMin = accelerometer.xAvg;
-			break;
-		}
+	waitUntil(&pushButton, pressed);
+	for (i = 0; i < 8; i++){
+		updateAccelerometer(&accelerometer);
 	}
+	accelerometer.xMin = accelerometer.xAvg;
+	waitUntil(&pushButton, unpressed);
+
 	// yMax
 	lightLEDMask(&ring, W_LED);
-	while(1){
-		updateTimer(&timer);
-		ButtonState previous = pushButton.state;
-		updateButtonState(&pushButton, &timer);
-		if (previous == unpressed && pushButton.state == pressed){
-			int i;
-			for (i = 0; i < 8; i++){
-				updateAccelerometer(&accelerometer);
-			}
-			accelerometer.yMax = accelerometer.yAvg;
-			break;
-		}
+	waitUntil(&pushButton, pressed);
+	for (i = 0; i < 8; i++){
+		updateAccelerometer(&accelerometer);
 	}
+	accelerometer.yMax = accelerometer.yAvg;
+	waitUntil(&pushButton, unpressed);
+
 	// yMin
 	lightLEDMask(&ring, E_LED);
-	while(1){
-		updateTimer(&timer);
-		ButtonState previous = pushButton.state;
-		updateButtonState(&pushButton, &timer);
-		if (previous == unpressed && pushButton.state == pressed){
-			int i;
-			for (i = 0; i < 8; i++){
-				updateAccelerometer(&accelerometer);
-			}
-			accelerometer.yMin = accelerometer.yAvg;
-			break;
-		}
+	waitUntil(&pushButton, pressed);
+	for (i = 0; i < 8; i++){
+		updateAccelerometer(&accelerometer);
 	}
+	accelerometer.yMin = accelerometer.yAvg;
+	waitUntil(&pushButton, unpressed);
+
 	// zMax
 	lightLEDMask(&ring, N_LED + SE_LED + SW_LED);
-	while(1){
-		updateTimer(&timer);
-		ButtonState previous = pushButton.state;
-		updateButtonState(&pushButton, &timer);
-		if (previous == unpressed && pushButton.state == pressed){
-			int i;
-			for (i = 0; i < 8; i++){
-				updateAccelerometer(&accelerometer);
-			}
-			accelerometer.zMax = accelerometer.zAvg;
-			break;
-		}
+	waitUntil(&pushButton, pressed);
+	for (i = 0; i < 8; i++){
+		updateAccelerometer(&accelerometer);
 	}
+	accelerometer.zMax = accelerometer.zAvg;
+	waitUntil(&pushButton, unpressed);
+
 	// zMin
 	lightLEDMask(&ring, S_LED + NW_LED + NE_LED);
-	while(1){
-		updateTimer(&timer);
-		ButtonState previous = pushButton.state;
-		updateButtonState(&pushButton, &timer);
-		if (previous == unpressed && pushButton.state == pressed){
-			int i;
-			for (i = 0; i < 8; i++){
-				updateAccelerometer(&accelerometer);
-			}
-			accelerometer.zMax = accelerometer.zAvg;
-			break;
-		}
+	waitUntil(&pushButton, pressed);
+	for (i = 0; i < 8; i++){
+		updateAccelerometer(&accelerometer);
 	}
+	accelerometer.zMin = accelerometer.zAvg;
+	waitUntil(&pushButton, unpressed);
 
 	while (1)
 	{

@@ -26,3 +26,12 @@ void updateButtonState(ButtonDefinition *button, TimerDefinition *timer)
 
 	}
 }
+
+void waitUntil(ButtonDefinition *button, ButtonState state, TimerDefinition *timer)
+{
+	while (button->state != state)
+	{
+		updateTimer(timer);
+		updateButtonState(button, timer);
+	}
+}
