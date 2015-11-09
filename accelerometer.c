@@ -1,6 +1,6 @@
 #include "accelerometer.h"
 
-int n_x = 0;						// index for circular buffer
+unsigned int n_x = 0;						// index for circular buffer
 volatile unsigned int buffer[3][8];
 
 void initializeAccelerometer(AccelerometerDefinition *accelerometer) {
@@ -25,7 +25,7 @@ void initializeAccelerometer(AccelerometerDefinition *accelerometer) {
 	ADC10DTC1 = 3;                         // number of conversions
 
 	int i;
-	for (i = 0; i < 8; i++)
+	for (i = 8; i > 0; i--)
 		updateAccelerometer(accelerometer);
 }
 
@@ -46,7 +46,6 @@ void updateAccelerometer(AccelerometerDefinition *accelerometer) {
 	__bis_SR_register(CPUOFF + GIE);        // LPM0, ADC10_ISR will force exit
 	// ADCMEM?
 
-	// TODO change to averaging code
 	accelerometer->zVal = measurements[0];	// get fresh x, y, z vals
 	accelerometer->yVal = measurements[1];
 	accelerometer->xVal = measurements[2];

@@ -92,7 +92,7 @@ measurements getDisplaySetting(coordinates* position) {
 			position->y = -position->y;	//for coordinates in first and fourth quadrants make y positive for angle
 		}
 
-		calculations xyCalc = findQuadrantAngle(position->x, position->y); //gets angle between x and y, arctan(y/x)
+		const calculations xyCalc = findQuadrantAngle(position->x, position->y); //gets angle between x and y, arctan(y/x)
 		totalAngle = findTotalAngle(xyCalc.angle, quad); //gets angle between 0 - 36000
 
 		hypotenuse = xyCalc.hypotenuse;
@@ -108,7 +108,7 @@ measurements getDisplaySetting(coordinates* position) {
 		position->z = -position->z;
 	}
 
-	calculations tiltCalc = findQuadrantAngle((position->z << 1) * 50,
+	const calculations tiltCalc = findQuadrantAngle((position->z << 1) * 50,
 			hypotenuse);	//gets angle of tilt, arctan(hypotenuse/z)
 	angles.tilt = tiltCalc.angle;
 

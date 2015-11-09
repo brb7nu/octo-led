@@ -2,7 +2,7 @@
 #define ACCELEROMETER_H
 
 #include <msp430.h>
-extern int n_x;						// index for circular buffer
+extern unsigned int n_x;						// index for circular buffer
 extern volatile unsigned int buffer[3][8];
 
 typedef struct
