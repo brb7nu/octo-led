@@ -11,3 +11,6 @@ How to PWM on multiple LED segments separately
 
 Future:
 combine functionality into accelerometer_LED_board.h
+
+todo fix init function on led ring
+fix warnings in CCS

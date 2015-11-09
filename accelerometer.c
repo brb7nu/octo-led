@@ -29,10 +29,6 @@ void initializeAccelerometer(AccelerometerDefinition *accelerometer) {
 		updateAccelerometer(accelerometer);
 }
 
-void calibrateAccelerometer(AccelerometerDefinition *accelerometer) {
-
-}
-
 volatile unsigned int upCnt = 0;
 
 void updateAccelerometer(AccelerometerDefinition *accelerometer) {

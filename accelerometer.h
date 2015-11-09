@@ -30,7 +30,6 @@ typedef struct
 } AccelerometerDefinition;
 
 void initializeAccelerometer(AccelerometerDefinition *accelerometer);
-void calibrateAccelerometer(AccelerometerDefinition *accelerometer);
 void updateAccelerometer(AccelerometerDefinition *accelerometer);
 void filter(AccelerometerDefinition *accelerometer);
 void normalize(AccelerometerDefinition *accelerometer);
