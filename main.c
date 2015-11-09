@@ -65,7 +65,7 @@ int main(void)
 	// xMin
 	lightLEDMask(&ring, S_LED);
 	waitUntil(&pushButton, pressed, &timer);
-	for (i = 0; i < 8; i++){
+	for (i = 8; i >0; i--){
 		updateAccelerometer(&accelerometer);
 	}
 	accelerometer.xMin = accelerometer.xAvg;
@@ -74,7 +74,7 @@ int main(void)
 	// yMax
 	lightLEDMask(&ring, W_LED);
 	waitUntil(&pushButton, pressed, &timer);
-	for (i = 0; i < 8; i++){
+	for (i = 8; i >0; i--){
 		updateAccelerometer(&accelerometer);
 	}
 	accelerometer.yMax = accelerometer.yAvg;
@@ -83,7 +83,7 @@ int main(void)
 	// yMin
 	lightLEDMask(&ring, E_LED);
 	waitUntil(&pushButton, pressed, &timer);
-	for (i = 0; i < 8; i++){
+	for (i = 8; i >0; i--){
 		updateAccelerometer(&accelerometer);
 	}
 	accelerometer.yMin = accelerometer.yAvg;
