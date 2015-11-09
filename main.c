@@ -151,45 +151,8 @@ int main(void)
 		{
 			lightLEDAndNeighbors(&ring, BIT0);
 		}
-
-		//lightLEDAndNeighbors(&ring, 3, &timer);
-
-		// switch (systemState)
-		// {
-		// 	case initialize:
-		// 		systemState = calibrationIndicate;
-
-
-
-		// 		break;
-		// 	case calibrationIndicate:
-		// 		// flash all LEDs to tell user to calibrate
-
-		// 		// exit conditions for this state
-		// 		if (pushButton.state == pressed)
-		// 		{
-		// 			// calibrate this axis
-		// 			systemState = calibrationMeasure;
-		// 		}
-		// 		break;
-		// 	case calibrationMeasure:
-		// 		// read the 8-sample buffer for x, y, or z
-		// 		systemState = calibrationIndicate;
-		// 		break;
-		// 	case calibrationStore:
-		// 		break;
-		// 	case levelReadADC:
-		// 		break;
-		// 	case levelLighLEDs:
-		// 		break;
-		// 	case levelCORDIC:
-		// 		break;
-		// 	default:
-		// 		break;
-		// }
 	}
-
-
+	
 	return 0;
 }
 

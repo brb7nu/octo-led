@@ -47,9 +47,9 @@ void updateAccelerometer(AccelerometerDefinition *accelerometer) {
 	// ADCMEM?
 
 	// TODO change to averaging code
-	accelerometer->xVal = measurements[0];	// get fresh x, y, z vals
+	accelerometer->zVal = measurements[0];	// get fresh x, y, z vals
 	accelerometer->yVal = measurements[1];
-	accelerometer->zVal = measurements[2];
+	accelerometer->xVal = measurements[2];
 	filter(accelerometer);	// send those to the circular buffer
 
 	upCnt++;
