@@ -60,7 +60,12 @@ void updateLEDRing(LEDRingDefinition *ring)
 	if (ring->dutyIndex == 0)
 	{
 		ring->dutyIndex = 100;
-		reloadPWMTimes(ring);
+		unsigned int i = 8;
+		while (i)
+		{
+			i--;
+			ring->dutyCycleRemaining[i] = ring->dutyCycle[i];
+		}		
 		P1OUT ^= BIT6;
 	}
 
@@ -84,19 +89,21 @@ void updateLEDRing(LEDRingDefinition *ring)
 }
 
 inline void sendLEDMask(unsigned char mask){
-	send(mask);
+    unsigned char bit = 0x80;
+
+    while(bit){
+        if( mask & bit ){
+            P1OUT |= SI;
+        }
+        else{
+            P1OUT &= ~SI;
+        }
+        bit >>= 1;
+        P1OUT |= SCK;
+		P1OUT &= ~SCK;
+    }
 	P2OUT |= LATCH;
 	P2OUT &= ~LATCH;
-}
-
-inline void reloadPWMTimes(LEDRingDefinition *ring)
-{
-	unsigned int i = 8;
-	while (i)
-	{
-		i--;
-		ring->dutyCycleRemaining[i] = ring->dutyCycle[i];
-	}
 }
 
 void initializeLEDRing(LEDRingDefinition *ring)
@@ -118,20 +125,4 @@ void initializeLEDRing(LEDRingDefinition *ring)
 		i--;
 		ring->dutyCycleRemaining[i] = 0;
 	}
-}
-
-inline void send(unsigned char s){
-    unsigned char bit = 0x80;
-
-    while(bit){
-        if( s & bit ){
-            P1OUT |= SI;
-        }
-        else{
-            P1OUT &= ~SI;
-        }
-        bit >>= 1;
-        P1OUT |= SCK;
-		P1OUT &= ~SCK;
-    }
 }

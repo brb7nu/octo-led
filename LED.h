@@ -40,7 +40,6 @@ void lightLEDAndNeighbors(LEDRingDefinition *ring, char mask);
 void updateLEDRing(LEDRingDefinition *ring);
 void initializeLEDRing(LEDRingDefinition *ring);
 void lightLEDMask(LEDRingDefinition *ring, char mask);
-inline void reloadPWMTimes(LEDRingDefinition *ring);
 inline void clearDutyCycles(LEDRingDefinition *ring);
 inline void sendLEDMask(unsigned char mask);
 
