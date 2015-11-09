@@ -48,64 +48,64 @@ int main(void)
 
 	_BIS_SR(GIE);
 
-	// int i;
+	int i;
 
-	// ////BEGIN INITIALIZATION/////
-	// // xMax
-	// lightLEDMask(&ring, N_LED);
-	// waitUntil(&pushButton, pressed, &timer);
+	////BEGIN INITIALIZATION/////
+	// xMax
+	lightLEDMask(&ring, N_LED);
+	waitUntil(&pushButton, pressed, &timer);
 
-	// // button is pressed, so calibrate xmax
-	// for (i = 0; i < 8; i++){
-	// 	updateAccelerometer(&accelerometer);
-	// }
-	// accelerometer.xMax = accelerometer.xAvg;
-	// waitUntil(&pushButton, unpressed, &timer);
+	// button is pressed, so calibrate xmax
+	for (i = 0; i < 8; i++){
+		updateAccelerometer(&accelerometer);
+	}
+	accelerometer.xMax = accelerometer.xAvg;
+	waitUntil(&pushButton, unpressed, &timer);
 
-	// // xMin
-	// lightLEDMask(&ring, S_LED);
-	// waitUntil(&pushButton, pressed, &timer);
-	// for (i = 8; i >0; i--){
-	// 	updateAccelerometer(&accelerometer);
-	// }
-	// accelerometer.xMin = accelerometer.xAvg;
-	// waitUntil(&pushButton, unpressed, &timer);
+	// xMin
+	lightLEDMask(&ring, S_LED);
+	waitUntil(&pushButton, pressed, &timer);
+	for (i = 8; i >0; i--){
+		updateAccelerometer(&accelerometer);
+	}
+	accelerometer.xMin = accelerometer.xAvg;
+	waitUntil(&pushButton, unpressed, &timer);
 
-	// // yMax
-	// lightLEDMask(&ring, W_LED);
-	// waitUntil(&pushButton, pressed, &timer);
-	// for (i = 8; i >0; i--){
-	// 	updateAccelerometer(&accelerometer);
-	// }
-	// accelerometer.yMax = accelerometer.yAvg;
-	// waitUntil(&pushButton, unpressed, &timer);
+	// yMax
+	lightLEDMask(&ring, W_LED);
+	waitUntil(&pushButton, pressed, &timer);
+	for (i = 8; i >0; i--){
+		updateAccelerometer(&accelerometer);
+	}
+	accelerometer.yMax = accelerometer.yAvg;
+	waitUntil(&pushButton, unpressed, &timer);
 
-	// // yMin
-	// lightLEDMask(&ring, E_LED);
-	// waitUntil(&pushButton, pressed, &timer);
-	// for (i = 8; i >0; i--){
-	// 	updateAccelerometer(&accelerometer);
-	// }
-	// accelerometer.yMin = accelerometer.yAvg;
-	// waitUntil(&pushButton, unpressed, &timer);
+	// yMin
+	lightLEDMask(&ring, E_LED);
+	waitUntil(&pushButton, pressed, &timer);
+	for (i = 8; i >0; i--){
+		updateAccelerometer(&accelerometer);
+	}
+	accelerometer.yMin = accelerometer.yAvg;
+	waitUntil(&pushButton, unpressed, &timer);
 
-	// // zMax
-	// lightLEDMask(&ring, N_LED + SE_LED + SW_LED);
-	// waitUntil(&pushButton, pressed, &timer);
-	// for (i = 0; i < 8; i++){
-	// 	updateAccelerometer(&accelerometer);
-	// }
-	// accelerometer.zMax = accelerometer.zAvg;
-	// waitUntil(&pushButton, unpressed, &timer);
+	// zMax
+	lightLEDMask(&ring, N_LED + SE_LED + SW_LED);
+	waitUntil(&pushButton, pressed, &timer);
+	for (i = 0; i < 8; i++){
+		updateAccelerometer(&accelerometer);
+	}
+	accelerometer.zMax = accelerometer.zAvg;
+	waitUntil(&pushButton, unpressed, &timer);
 
-	// // zMin
-	// lightLEDMask(&ring, S_LED + NW_LED + NE_LED);
-	// waitUntil(&pushButton, pressed, &timer);
-	// for (i = 0; i < 8; i++){
-	// 	updateAccelerometer(&accelerometer);
-	// }
-	// accelerometer.zMin = accelerometer.zAvg;
-	// waitUntil(&pushButton, unpressed, &timer);
+	// zMin
+	lightLEDMask(&ring, S_LED + NW_LED + NE_LED);
+	waitUntil(&pushButton, pressed, &timer);
+	for (i = 0; i < 8; i++){
+		updateAccelerometer(&accelerometer);
+	}
+	accelerometer.zMin = accelerometer.zAvg;
+	waitUntil(&pushButton, unpressed, &timer);
 
 	// DON'T CALL THIS METHOD TOO OFTEN
 	setLEDAndNeighbors(&ring, BIT3);
@@ -115,44 +115,44 @@ int main(void)
 		updateTimer(&timer);
 		updateAccelerometer(&accelerometer);
 
-		// coord.x = accelerometer.xNormalized;
-		// coord.y = accelerometer.yNormalized;
-		// coord.z = accelerometer.zNormalized;
-		// meas = getDisplaySetting(&coord);
+		coord.x = accelerometer.xNormalized;
+		coord.y = accelerometer.yNormalized;
+		coord.z = accelerometer.zNormalized;
+		meas = getDisplaySetting(&coord);
 
-		// // cutoff angles are 1/16th offset from 3600 / 8
-		// if (2250 <= meas.angle && meas.angle < 6750)
-		// {
-		// 	setLEDAndNeighbors(&ring, BIT1);
-		// }
-		// else if (6750 <= meas.angle && meas.angle < 11250)
-		// {
-		// 	setLEDAndNeighbors(&ring, BIT2);
-		// }
-		// else if (11250 <= meas.angle && meas.angle < 15750)
-		// {
-		// 	setLEDAndNeighbors(&ring, BIT3);
-		// }
-		// else if (15750 <= meas.angle && meas.angle < 20250)
-		// {
-		// 	setLEDAndNeighbors(&ring, BIT4);
-		// }
-		// else if (20250 <= meas.angle && meas.angle < 24750)
-		// {
-		// 	setLEDAndNeighbors(&ring, BIT5);
-		// }
-		// else if (24750 <= meas.angle && meas.angle < 29250)
-		// {
-		// 	setLEDAndNeighbors(&ring, BIT6);
-		// }
-		// else if (29250 <= meas.angle && meas.angle < 33750)
-		// {
-		// 	setLEDAndNeighbors(&ring, BIT7);
-		// }
-		// else
-		// {
-		// 	setLEDAndNeighbors(&ring, BIT0);
-		// }
+		// cutoff angles are 1/16th offset from 3600 / 8
+		if (2250 <= meas.angle && meas.angle < 6750)
+		{
+			setLEDAndNeighbors(&ring, BIT1);
+		}
+		else if (6750 <= meas.angle && meas.angle < 11250)
+		{
+			setLEDAndNeighbors(&ring, BIT2);
+		}
+		else if (11250 <= meas.angle && meas.angle < 15750)
+		{
+			setLEDAndNeighbors(&ring, BIT3);
+		}
+		else if (15750 <= meas.angle && meas.angle < 20250)
+		{
+			setLEDAndNeighbors(&ring, BIT4);
+		}
+		else if (20250 <= meas.angle && meas.angle < 24750)
+		{
+			setLEDAndNeighbors(&ring, BIT5);
+		}
+		else if (24750 <= meas.angle && meas.angle < 29250)
+		{
+			setLEDAndNeighbors(&ring, BIT6);
+		}
+		else if (29250 <= meas.angle && meas.angle < 33750)
+		{
+			setLEDAndNeighbors(&ring, BIT7);
+		}
+		else
+		{
+			setLEDAndNeighbors(&ring, BIT0);
+		}
 	}
 	
 	return 0;
