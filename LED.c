@@ -28,7 +28,7 @@ void lightLEDAndNeighbors(LEDRingDefinition *ring, char mask)
 	ring->dutyCycle[higherNeighbor] = DUTY_CYCLE_DIM;
 }
 
-void clearDutyCycles(LEDRingDefinition *ring)
+inline void clearDutyCycles(LEDRingDefinition *ring)
 {
 	unsigned int i = 8;
 	while (i)
@@ -57,7 +57,6 @@ void lightLEDMask(LEDRingDefinition *ring, char mask)
 
 void updateLEDRing(LEDRingDefinition *ring)
 {
-	// for each LEDLightDefinition in the ring, use the timer to determine whether it should be lit or dark
 	if (ring->dutyIndex == 0)
 	{
 		ring->dutyIndex = 100;
@@ -86,11 +85,11 @@ void updateLEDRing(LEDRingDefinition *ring)
 
 inline void sendLEDMask(unsigned char mask){
 	send(mask);
-	enableLatch();
-	disableLatch();
+	P2OUT |= LATCH;
+	P2OUT &= ~LATCH;
 }
 
-void reloadPWMTimes(LEDRingDefinition *ring)
+inline void reloadPWMTimes(LEDRingDefinition *ring)
 {
 	unsigned int i = 8;
 	while (i)
@@ -121,7 +120,7 @@ void initializeLEDRing(LEDRingDefinition *ring)
 	}
 }
 
-void send(unsigned char s){
+inline void send(unsigned char s){
     unsigned char bit = 0x80;
 
     while(bit){
@@ -132,27 +131,7 @@ void send(unsigned char s){
             P1OUT &= ~SI;
         }
         bit >>= 1;
-        pulseClock();
+        P1OUT |= SCK;
+		P1OUT &= ~SCK;
     }
-}
-
-inline void enableLatch(){
-	P2OUT |= LATCH;
-}
-
-inline void disableLatch(){
-	P2OUT &= ~LATCH;
-}
-
-inline void enableBlank(){
-	P1OUT |= BLANK;
-}
-
-inline void disableBlank(){
-	P1OUT &= ~BLANK;
-}
-
-inline void pulseClock(){
-	 P1OUT |= SCK;
-	 P1OUT &= ~SCK;
 }

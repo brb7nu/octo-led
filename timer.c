@@ -1,6 +1,6 @@
 #include "timer.h"
 
-unsigned int g100uSTimeout = 0;
+unsigned int timeout = 0;
 
 void initializeTimer(TimerDefinition *timer)
 {
@@ -15,7 +15,7 @@ void initializeTimer(TimerDefinition *timer)
 	BCSCTL1 = CALBC1_16MHZ;  			// |                        |
 
 	// setup Timer A
-	// SMCLK clock, divided by 4, in up mode, and start by clearing the timer
+	// SMCLK clock, divided by 8, in up mode, and start by clearing the timer
 	TACTL = TASSEL_2 | ID_3 | MC_1 | TACLR;
 
 	// setup value for comparison
@@ -29,12 +29,12 @@ void initializeTimer(TimerDefinition *timer)
 
 void updateTimer(TimerDefinition *timer)
 {
-	while (g100uSTimeout) // if non-zero (software timers are out of sync)
+	while (timeout) // if non-zero (software timers are out of sync)
 	{
 		// While 1 g10uSTimer is out of sync, increment it and decrement timeout
 		// Update and run 500 ms and 10 second timers based on the 1 ms global counter
 		timer->microseconds += 100;
-		g100uSTimeout--;
+		timeout--;
 	}
 	while (timer->microseconds >= 1000)
 	{

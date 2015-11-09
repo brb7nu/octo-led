@@ -18,9 +18,9 @@
 #define W_LED BIT1
 #define NW_LED BIT0
 
-#define DUTY_CYCLE_BRIGHTEST 100
-#define DUTY_CYCLE_BRIGHT 20
-#define DUTY_CYCLE_DIM 5
+#define DUTY_CYCLE_BRIGHTEST 50
+#define DUTY_CYCLE_BRIGHT 10
+#define DUTY_CYCLE_DIM 2
 #define DUTY_CYCLE_DIMMEST 1
 
 typedef struct
@@ -40,16 +40,8 @@ void lightLEDAndNeighbors(LEDRingDefinition *ring, char mask);
 void updateLEDRing(LEDRingDefinition *ring);
 void initializeLEDRing(LEDRingDefinition *ring);
 void lightLEDMask(LEDRingDefinition *ring, char mask);
-void reloadPWMTimes(LEDRingDefinition *ring);
-void clearDutyCycles(LEDRingDefinition *ring);
+inline void reloadPWMTimes(LEDRingDefinition *ring);
+inline void clearDutyCycles(LEDRingDefinition *ring);
 inline void sendLEDMask(unsigned char mask);
-
-// private SPI communication functions
-void send(unsigned char s);
-inline void enableLatch();                         // Allows operations to be carried out on LED Driver
-inline void disableLatch();                        // Prevents operations from being carried out on LED Driver
-inline void enableBlank();                         //
-inline void disableBlank();                        //
-inline void pulseClock();                          // Causes a clock tick to be sent to LED Driver
 
 #endif /* LED_H_ */

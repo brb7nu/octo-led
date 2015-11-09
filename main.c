@@ -110,7 +110,6 @@ int main(void)
 	while (1)
 	{
 		updateTimer(&timer);
-		updateButtonState(&pushButton, &timer);
 		updateAccelerometer(&accelerometer);
 
 		coord.x = accelerometer.xNormalized;
@@ -169,7 +168,7 @@ int main(void)
 #pragma vector = TIMER0_A0_VECTOR // Timer A interrupt service routine
 __interrupt void TimerA0_routine(void)
 {
-	g100uSTimeout++;
+	timeout++;
 	updateLEDRing(&ring);
 }
 
