@@ -35,6 +35,8 @@ long Zhypot;
 
 // NO need for LED mask because it just holds the non-zero values in ledRingHighTimeRemaining
 
+// MAKE SURE TO DISCONNECT THE JUMPERS FOR RXD, TXD, AND GREEN LED
+
 int main(void)
 {
 	WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
