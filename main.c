@@ -112,6 +112,7 @@ int main(void)
 		updateTimer(&timer);
 		updateButtonState(&pushButton, &timer);
 		updateAccelerometer(&accelerometer);
+		normalize(&accelerometer);
 
 		coord.x = accelerometer.xNormalized;
 		coord.y = accelerometer.yNormalized;
