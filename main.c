@@ -147,12 +147,14 @@ int main(void)
 		{
 			lightLEDAndNeighbors(&ring, BIT7);
 		}
-		else
+		else if (33750 <= meas.angle && meas.angle < 36000
+			|| 0 <= meas.angle && meas.angle < 2250)
 		{
 			lightLEDAndNeighbors(&ring, BIT0);
 		}
+		else clearDutyCycles(&ring);
 	}
-	
+
 	return 0;
 }
 
