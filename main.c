@@ -128,9 +128,9 @@ int main(void)
 		updateButtonState(&pushButton, &timer);
 		updateAccelerometer(&accelerometer);
 
-		coord.x = accelerometer.xOffset;
-		coord.y = accelerometer.yOffset;
-		coord.z = accelerometer.zOffset;
+		coord.x = accelerometer.xNormalized;
+		coord.y = accelerometer.yNormalized;
+		coord.z = accelerometer.zNormalized;
 		meas = getDisplaySetting(&coord);
 
 		// cutoff angles are 1/16th offset from 3600 / 8
