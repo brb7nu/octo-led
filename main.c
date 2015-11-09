@@ -53,59 +53,59 @@ int main(void)
 	////BEGIN INITIALIZATION/////
 	// xMax
 	lightLEDMask(&ring, N_LED);
-	waitUntil(&pushButton, pressed);
+	waitUntil(&pushButton, pressed, &timer);
 
 	// button is pressed, so calibrate xmax
 	for (i = 0; i < 8; i++){
 		updateAccelerometer(&accelerometer);
 	}
 	accelerometer.xMax = accelerometer.xAvg;
-	waitUntil(&pushButton, unpressed);
+	waitUntil(&pushButton, unpressed, &timer);
 
 	// xMin
 	lightLEDMask(&ring, S_LED);
-	waitUntil(&pushButton, pressed);
+	waitUntil(&pushButton, pressed, &timer);
 	for (i = 0; i < 8; i++){
 		updateAccelerometer(&accelerometer);
 	}
 	accelerometer.xMin = accelerometer.xAvg;
-	waitUntil(&pushButton, unpressed);
+	waitUntil(&pushButton, unpressed, &timer);
 
 	// yMax
 	lightLEDMask(&ring, W_LED);
-	waitUntil(&pushButton, pressed);
+	waitUntil(&pushButton, pressed, &timer);
 	for (i = 0; i < 8; i++){
 		updateAccelerometer(&accelerometer);
 	}
 	accelerometer.yMax = accelerometer.yAvg;
-	waitUntil(&pushButton, unpressed);
+	waitUntil(&pushButton, unpressed, &timer);
 
 	// yMin
 	lightLEDMask(&ring, E_LED);
-	waitUntil(&pushButton, pressed);
+	waitUntil(&pushButton, pressed, &timer);
 	for (i = 0; i < 8; i++){
 		updateAccelerometer(&accelerometer);
 	}
 	accelerometer.yMin = accelerometer.yAvg;
-	waitUntil(&pushButton, unpressed);
+	waitUntil(&pushButton, unpressed, &timer);
 
 	// zMax
 	lightLEDMask(&ring, N_LED + SE_LED + SW_LED);
-	waitUntil(&pushButton, pressed);
+	waitUntil(&pushButton, pressed, &timer);
 	for (i = 0; i < 8; i++){
 		updateAccelerometer(&accelerometer);
 	}
 	accelerometer.zMax = accelerometer.zAvg;
-	waitUntil(&pushButton, unpressed);
+	waitUntil(&pushButton, unpressed, &timer);
 
 	// zMin
 	lightLEDMask(&ring, S_LED + NW_LED + NE_LED);
-	waitUntil(&pushButton, pressed);
+	waitUntil(&pushButton, pressed, &timer);
 	for (i = 0; i < 8; i++){
 		updateAccelerometer(&accelerometer);
 	}
 	accelerometer.zMin = accelerometer.zAvg;
-	waitUntil(&pushButton, unpressed);
+	waitUntil(&pushButton, unpressed, &timer);
 
 	while (1)
 	{
